@@ -1,4 +1,6 @@
 //controller file for "Others"
+//"index" is for the jade template/view called index.jade,
+//change when building frontend 
 
 /* GET 'home' page */
 module.exports.edumaHome = function(req, res){

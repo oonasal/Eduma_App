@@ -1,4 +1,6 @@
 //controller file for "Users"
+//"index" is for the jade template/view called index.jade,
+//change when building frontend 
 
 /* GET 'teacherList' page */
 module.exports.teacherList = function(req, res){

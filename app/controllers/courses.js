@@ -1,4 +1,6 @@
 //controller file for "Courses"
+//"index" is for the jade template/view called index.jade,
+//change when building frontend 
 
 /* GET 'courseList' page */
 module.exports.courseList = function(req, res){

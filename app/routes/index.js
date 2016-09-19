@@ -21,18 +21,5 @@ router.get('/users/teachers/teacher-details/reviews', ctrlUsers.teacherReviews);
 router.get('/users/students/student-details', ctrlUsers.studentDetails);
 
 
-//var ctrlMain = require('../controllers/main');
-
-/* GET home page. */
-/*router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});*/
-
-/*var homepageController = function(req, res, next) {
-  res.render('index', { title: 'Express' });
-};*/
-
-/* GET home page. */
-//router.get('/', ctrlMain.index);
 
 module.exports = router;
