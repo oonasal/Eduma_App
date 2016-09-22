@@ -4,7 +4,7 @@
 //you can also use named connections for connecting to 
 //multiple databases
 
-var mongoose = require( 'mongoose' );
+var mongoose = require('mongoose');
 var gracefulShutdown;
 var dbURI = 'mongodb://localhost/eduma_app';
 
