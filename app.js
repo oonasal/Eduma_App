@@ -14,6 +14,8 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'app', 'views'));
 app.set('view engine', 'jade');
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
