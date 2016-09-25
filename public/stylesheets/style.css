@@ -6,3 +6,21 @@
 a {
   color: #00B7FF;
 }*/
+
+/*Main application CSS */
+
+body {
+  height: 100vh;
+  width: 100%;
+  background-color: lightgrey !important;
+}
+
+#apparea {
+  height: inherit;
+}
+
+.form-signin {
+  max-width: 400px;
+  padding:20px;
+  margin: 0 auto;
+}

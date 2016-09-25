@@ -1,0 +1,18 @@
+<body ng-app="myApp" ng-controller="MyAppController">
+  <div id="apparea" class="container" >
+      <form class="form-signin" name="loginForm" ng-submit="doSubmit()">
+          <h2 class="form-signin-heading">Eduma ( Nam ? )</h2>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input ng-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input ng-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!loginForm.$valid" >Sign in</button>
+          <span class="btn btn-lg btn-danger btn-block">Sign in with Google</span> 
+        </form>
+  </div>
+</body>
