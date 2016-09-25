@@ -14,9 +14,6 @@ module.exports.readTeachers = function (req, res) {
 };
 
 module.exports.readOneTeacher = function (req, res) {
-	//change this to actual data
-	//sendJsonResponse(res, 200, {"status" : "success"});
-
 	if(req.params && req.params.teacherid) {
 		t.findById(req.params.teacherid).exec(function(err, teacher) {
 	        //if teacher is not returned
@@ -37,12 +34,23 @@ module.exports.readOneTeacher = function (req, res) {
 			"message": "No teacherid in request"
 		});
 	}
-
 };
 
 module.exports.addTeacher = function (req, res) {
-	//change this to actual data
-	sendJsonResponse(res, 200, {"status" : "success"});
+	t.create({
+		firstName: req.body.firstName,
+  		lastName: req.body.lastName,
+  		title: req.body.title,
+  		location: req.body.location,
+  		summary: req.body.summary,
+  		experience: req.body.experience
+    }, function(err, teacher) {
+    	if(err) {
+    		sendJsonResponse(res, 400, err);
+    	} else {
+    		sendJsonResponse(res, 201, teacher);
+    	}
+    });
 };
 
 module.exports.removeTeacher = function (req, res) {
