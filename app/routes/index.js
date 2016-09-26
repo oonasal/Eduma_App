@@ -20,6 +20,20 @@ router.get('/users/teachers', ctrlUsers.teacherList);
 //router.get('/users/teachers/teacher-details/reviews', ctrlUsers.teacherReviews);
 //router.get('/users/students/student-details', ctrlUsers.studentDetails);
 
+//Get HomePage
+router.get('/', function(req,res){
+	res.render('index');
+});
+
+// Register
+router.get('/register', function(req,res){
+	res.render('register')
+});
+
+// Log In
+router.get('/login', function(req,res){
+	res.render('login')
+}); 
 
 
 module.exports = router;
