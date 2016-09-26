@@ -1,12 +1,12 @@
 (function(){
     var app = angular.module('myApp');
-    app.service('AuthService', AuthService);
+    app.service('TeacherService', TeacherService);
 
-    AuthService.$inject = ['$http'];
-    function AuthService($http) {
+    TeacherService.$inject = ['$http'];
+    function TeacherService($http) {
         this.login = login;
         
-        console.log('authservice init');
+        console.log('Teacherservice init');
         ////////////////
 
         function testFunc() { 
@@ -16,10 +16,6 @@
         function login( email , password ) {
             console.info('login with email',email,'and password ',password);
             // TODO : A promise ? something ? please ? 
-        }
-
-        function register( payload ) { 
-            console.log('Registering as', payload );
         }
     }
 })();
