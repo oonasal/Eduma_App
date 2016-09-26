@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var t = mongoose.model('Teacher');
-<<<<<<< HEAD
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
