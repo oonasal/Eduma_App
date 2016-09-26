@@ -9,8 +9,15 @@ var sendJsonResponse = function(res, status, content) {
 };
 
 module.exports.readTeachers = function (req, res) {
-	//change this to actual data
-	sendJsonResponse(res, 200, {"status" : "success"});
+	t.find().exec(function(err, teachers){
+		if (err) {
+    		console.log('Error:', err);
+    		sendJsonResponse(res, 404, err);
+    		return;
+    	} else {
+    		sendJsonResponse(res, 200, teachers);
+    	}
+	});
 };
 
 module.exports.readOneTeacher = function (req, res) {
@@ -54,6 +61,19 @@ module.exports.addTeacher = function (req, res) {
 };
 
 module.exports.removeTeacher = function (req, res) {
-	//change this to actual data
-	sendJsonResponse(res, 200, {"status" : "success"});
+	var teacherid = req.params.teacherid;
+	if(req.params && teacherid) {
+		t.findByIdAndRemove(teacherid).exec(function(err, teacher) {
+	        if(err) {
+	        	sendJsonResponse(res, 404, err);
+	        	return;
+	    	}
+	    	console.log("Removing teacher.");
+	    	sendJsonResponse(res, 204, null);
+	    });
+	} else {
+		sendJsonResponse(res, 404, {
+			"message": "No teacherid in request"
+		});
+	}
 };

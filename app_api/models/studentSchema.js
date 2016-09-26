@@ -2,7 +2,7 @@
 
 var mongoose = require( 'mongoose' );
 
-//defining a schema for teachers
+//defining a schema for students
 var studenSchema = new mongoose.Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
@@ -13,5 +13,5 @@ var studenSchema = new mongoose.Schema({
 });
 
 //compiling the schema into a model
-//mongodb collection name for this model will be "teachers"
+//mongodb collection name for this model will be "students"
 mongoose.model('Student', studentSchema);
