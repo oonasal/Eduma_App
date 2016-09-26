@@ -3,12 +3,12 @@
 var mongoose = require( 'mongoose' );
 
 //defining a schema for students
-var studenSchema = new mongoose.Schema({
+var studentSchema = new mongoose.Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   title: {type: String, required: true},
   location: String,
-  age: {type:Number, required: true, min:5, max:100}
+  age: {type: Number, required: true, min:5, max:100},
   summary: {type: String, required: true}
 });
 

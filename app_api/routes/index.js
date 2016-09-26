@@ -32,9 +32,9 @@ router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
 //router.delete('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.removeTeacherReview);
 
 //students:
-//router.get('/users/students', ctrlUsers.readStudents);
-//router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
-//router.post('/users/students', ctrlUsers.addStudent);
-//router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
+router.get('/users/students', ctrlUsers.readStudents);
+router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
+router.post('/users/students', ctrlUsers.addStudent);
+router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
 
 module.exports = router;
