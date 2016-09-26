@@ -67,3 +67,4 @@ process.on('SIGTERM', function() {
 });
 
 require('./teacherSchema');
+require('./studentSchema');
