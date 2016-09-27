@@ -38,6 +38,7 @@ module.exports.createCourseHandler = function(req,res){
 		t.getTeacherById(teacher, function(err, teacher) {
 			if (err) {sendJsonResponse(res, 404, err);}
 			teacher.courses.push(newCourse);
+			teacher.save();
 		})
 
 		c.createCourse(newCourse, function(err, course){

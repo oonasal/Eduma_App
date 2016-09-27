@@ -182,8 +182,8 @@ module.exports.registerStudentsHandler = function(req,res){
 		sendJsonResponse(res, 404, errors);
 	} else {
 		var newStudent = new s({
-			firstName: firstname,
-			lastName: lastname,
+			firstname: firstname,
+			lastname: lastname,
 			username: username,
 			password: password,
 			email: email,
@@ -216,8 +216,8 @@ module.exports.registerTeachersHandler = function(req,res){
 	var title = req.body.title;
 
 	// Validation, this should be implemented in frontend, but i did it here just for the demo test
-	req.checkBody('firstname', 'Name is required').notEmpty();
-	req.checkBody('lastname', 'Name is required').notEmpty();
+	req.checkBody('firstname', 'firstName is required').notEmpty();
+	req.checkBody('lastname', 'lastName is required').notEmpty();
 	req.checkBody('email', 'email is required').notEmpty();
 	req.checkBody('email', 'email is invalid').isEmail();
 	req.checkBody('username', 'username is required').notEmpty();
@@ -234,8 +234,8 @@ module.exports.registerTeachersHandler = function(req,res){
 		sendJsonResponse(res, 404, errors);
 	} else {
 		var newTeacher = new t({
-			firstName: firstname,
-			lastName: lastname,
+			firstname: firstname,
+			lastname: lastname,
 			username: username,
 			password: password,
 			email: email,

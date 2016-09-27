@@ -51,7 +51,7 @@ var ctrlUsers = require('../controllers/users');
 //teachers:
 router.get('/users/teachers', ctrlUsers.readTeachers);
 router.get('/users/teachers/:teacherid', ctrlUsers.readOneTeacher);
-router.post('/users/teachers', ctrlUsers.addTeacher);
+//router.post('/users/teachers', ctrlUsers.addTeacher);
 router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
 
 //reviews:
@@ -63,7 +63,7 @@ router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
 //students:
 router.get('/users/students', ctrlUsers.readStudents);
 router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
-router.post('/users/students', ctrlUsers.addStudent);
+//router.post('/users/students', ctrlUsers.addStudent);
 router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
 
 // Registers Users
