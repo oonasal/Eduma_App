@@ -1,5 +1,34 @@
 var express = require('express');
 var router = express.Router();
+var flash = require('connect-flash');
+var session = require('express-session');
+var expressValidator = require('express-validator');
+var passport = require('passport');
+
+router.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root;
+
+        while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+}));
+
+router.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
+router.use(flash());
 
 //include API controller files
 var ctrlCourses = require('../controllers/courses');
@@ -36,5 +65,15 @@ router.get('/users/students', ctrlUsers.readStudents);
 router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
 router.post('/users/students', ctrlUsers.addStudent);
 router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
+
+// Registers Users
+router.post('/users/register/teachers', ctrlUsers.registerTeachersHandler);
+router.post('/users/register/students', ctrlUsers.registerStudentsHandler);
+
+//Log In Users
+router.post('/users/login', ctrlUsers.loginHandler);
+
+//Log out Users
+router.get('/users/logout', ctrlUsers.logoutHandler);
 
 module.exports = router;
