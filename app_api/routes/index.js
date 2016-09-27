@@ -76,4 +76,8 @@ router.post('/users/login', ctrlUsers.loginHandler);
 //Log out Users
 router.get('/users/logout', ctrlUsers.logoutHandler);
 
+// Register Courses
+router.post('/:teacherid/courses/create', ctrlCourses.createCourseHandler)
+router.get('/:teacherid/:courseid', ctrlCourses.getCourseHandler)
+
 module.exports = router;

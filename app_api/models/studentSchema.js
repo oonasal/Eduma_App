@@ -6,8 +6,8 @@ var bcrypt = require('bcryptjs');
 
 //defining a schema for teachers
 var studentSchema = new mongoose.Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
     username: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
