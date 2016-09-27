@@ -16,10 +16,11 @@
         function login( email , password ) {
             console.info('login with email',email,'and password ',password);
             // TODO : A promise ? something ? please ? 
+            $http.get('/register/teachers')
         }
 
-        function register( payload ) { 
-            console.log('Registering as', payload );
+        function register( payload ) {
+            $http.post('/register/teachers',)
         }
     }
 })();
