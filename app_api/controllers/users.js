@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-var t = mongoose.model('Teacher');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
+var t = mongoose.model('Teacher');
 var s = mongoose.model('Student');
 
 var sendJsonResponse = function(res, status, content) {
@@ -48,22 +48,23 @@ module.exports.readOneTeacher = function (req, res) {
 	}
 };
 
-module.exports.addTeacher = function (req, res) {
-	t.create({
-		firstName: req.body.firstName,
-  		lastName: req.body.lastName,
-  		title: req.body.title,
-  		location: req.body.location,
-  		summary: req.body.summary,
-  		experience: req.body.experience
-    	}, function(err, teacher) {
-    	if(err) {
-    		sendJsonResponse(res, 400, err);
-    	} else {
-    		sendJsonResponse(res, 201, teacher);
-    	}
-    });
-};
+// Redundant code
+// module.exports.addTeacher = function (req, res) {
+// 	t.create({
+// 		firstName: req.body.firstName,
+//   		lastName: req.body.lastName,
+//   		title: req.body.title,
+//   		location: req.body.location,
+//   		summary: req.body.summary,
+//   		experience: req.body.experience
+//     	}, function(err, teacher) {
+//     	if(err) {
+//     		sendJsonResponse(res, 400, err);
+//     	} else {
+//     		sendJsonResponse(res, 201, teacher);
+//     	}
+//     });
+// };
 
 module.exports.removeTeacher = function (req, res) {
 	var teacherid = req.params.teacherid;
@@ -119,22 +120,23 @@ module.exports.readOneStudent = function (req, res) {
 	}
 };
 
-module.exports.addStudent = function (req, res) {
-	s.create({
-		firstName: req.body.firstName,
-  		lastName: req.body.lastName,
-  		title: req.body.title,
-  		location: req.body.location,
-  		age: req.body.age,
-  		summary: req.body.summary
-    	}, function(err, student) {
-	    	if(err) {
-	    		sendJsonResponse(res, 400, err);
-	    	} else {
-	    		sendJsonResponse(res, 201, student);
-	    	}
-    	});
-};
+// Redundant code
+// module.exports.addStudent = function (req, res) {
+// 	s.create({
+// 		firstName: req.body.firstName,
+//   		lastName: req.body.lastName,
+//   		title: req.body.title,
+//   		location: req.body.location,
+//   		age: req.body.age,
+//   		summary: req.body.summary
+//     	}, function(err, student) {
+// 	    	if(err) {
+// 	    		sendJsonResponse(res, 400, err);
+// 	    	} else {
+// 	    		sendJsonResponse(res, 201, student);
+// 	    	}
+//     	});
+// };
 
 module.exports.removeStudent = function (req, res) {
 	var studentid = req.params.studentid;
@@ -177,11 +179,11 @@ module.exports.registerStudentsHandler = function(req,res){
 	var errors = req.validationErrors();
 
 	if (errors) {
-		console.log("ERRORS: REGISTER HANDLING, ", errors)
+		sendJsonResponse(res, 404, errors);
 	} else {
 		var newStudent = new s({
-			firstName: firstname,
-			lastName: lastname,
+			firstname: firstname,
+			lastname: lastname,
 			username: username,
 			password: password,
 			email: email,
@@ -192,13 +194,11 @@ module.exports.registerStudentsHandler = function(req,res){
 		});
 
 		s.createStudents(newStudent, function(err, user){
-			if(err) {throw err;}
+			if (err) {sendJsonResponse(res, 404, err);}
 			console.log(user);
 		});
 
-		req.flash('You are now registered and can now logged in');
-
-		res.redirect('../../../login');
+		sendJsonResponse(res, 200, newStudent)
 	}
 }	
 
@@ -216,8 +216,8 @@ module.exports.registerTeachersHandler = function(req,res){
 	var title = req.body.title;
 
 	// Validation, this should be implemented in frontend, but i did it here just for the demo test
-	req.checkBody('firstname', 'Name is required').notEmpty();
-	req.checkBody('lastname', 'Name is required').notEmpty();
+	req.checkBody('firstname', 'firstName is required').notEmpty();
+	req.checkBody('lastname', 'lastName is required').notEmpty();
 	req.checkBody('email', 'email is required').notEmpty();
 	req.checkBody('email', 'email is invalid').isEmail();
 	req.checkBody('username', 'username is required').notEmpty();
@@ -231,11 +231,11 @@ module.exports.registerTeachersHandler = function(req,res){
 	var errors = req.validationErrors();
 
 	if (errors) {
-		console.log("ERRORS: REGISTER HANDLING, ", errors)
+		sendJsonResponse(res, 404, errors);
 	} else {
 		var newTeacher = new t({
-			firstName: firstname,
-			lastName: lastname,
+			firstname: firstname,
+			lastname: lastname,
 			username: username,
 			password: password,
 			email: email,
@@ -247,13 +247,11 @@ module.exports.registerTeachersHandler = function(req,res){
 		});
 
 		t.createTeachers(newTeacher, function(err, user){
-			if(err) {throw err;}
+			if (err) {sendJsonResponse(res, 404, err);}
 			console.log(user);
 		});
 
-		req.flash('You are now registered and can now logged in');
-
-		res.redirect('../../../login');
+		sendJsonResponse(res, 200, newTeacher)
 	}
 }
 
