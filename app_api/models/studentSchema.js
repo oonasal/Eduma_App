@@ -31,9 +31,9 @@ module.exports.createStudents = function(newUser, callback) {
 
 module.exports.getStudentByUsername = function(username, callback){
 	var query = {username: username};
-	User.findOne(query, callback);
+	Student.findOne(query, callback);
 }
 
 module.exports.getStudentById = function(id, callback){
-	User.findById(id, callback);
+	Student.findById(id, callback);
 }

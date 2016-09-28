@@ -49,6 +49,7 @@ var ctrlUsers = require('../controllers/users');
 //router.delete('/courses/:courseid/requests/:requestid', ctrlCourses.removeCourseRequest);
 
 //teachers:
+router.post('/users/register/teachers', ctrlUsers.registerTeachersHandler);
 router.get('/users/teachers', ctrlUsers.readTeachers);
 router.get('/users/teachers/:teacherid', ctrlUsers.readOneTeacher);
 //router.post('/users/teachers', ctrlUsers.addTeacher);
@@ -61,14 +62,16 @@ router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
 //router.delete('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.removeTeacherReview);
 
 //students:
+router.post('/users/register/students', ctrlUsers.registerStudentsHandler);
 router.get('/users/students', ctrlUsers.readStudents);
 router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
 //router.post('/users/students', ctrlUsers.addStudent);
 router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
 
-// Registers Users
-router.post('/users/register/teachers', ctrlUsers.registerTeachersHandler);
-router.post('/users/register/students', ctrlUsers.registerStudentsHandler);
+// Courses
+router.post('/:teacherid/courses/create', ctrlCourses.createCourseHandler) // register course
+router.get('/:teacherid/:courseid', ctrlCourses.getCourseHandler) // view course
+router.post('/users/requestcourse/:courseid', ctrlCourses.requestCourseHandler); // student request courses 
 
 //Log In Users
 router.post('/users/login', ctrlUsers.loginHandler);
@@ -76,8 +79,6 @@ router.post('/users/login', ctrlUsers.loginHandler);
 //Log out Users
 router.get('/users/logout', ctrlUsers.logoutHandler);
 
-// Register Courses
-router.post('/:teacherid/courses/create', ctrlCourses.createCourseHandler)
-router.get('/:teacherid/:courseid', ctrlCourses.getCourseHandler)
+
 
 module.exports = router;

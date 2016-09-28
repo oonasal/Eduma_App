@@ -65,7 +65,6 @@ process.on('SIGTERM', function() {
         process.exit(0);
     });
 });
-
+require('./studentSchema');
 require('./courseSchema');
 require('./teacherSchema');
-require('./studentSchema');
