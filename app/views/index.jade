@@ -3,6 +3,9 @@ extends layout
 block content
 
   script(src='controllers/main.controller.js')
-  script(src='services/auth.service.js')
+  script(src='lib/angular-local-storage.min.js')
+  //- script(src='services/auth.service.js')
+  script(src='services/authInterceptorService.js')
+  script(src='services/authService.js')
   include main.html
   
