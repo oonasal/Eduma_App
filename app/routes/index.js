@@ -21,7 +21,7 @@ router.get('/users/teachers', ctrlUsers.teacherList);
 //router.get('/users/students/student-details', ctrlUsers.studentDetails);
 
 //Get HomePage
-router.get('/', function(req,res){
+router.get('/', isLoggedIn, function(req,res){
 	res.render('index');
 });
 
@@ -34,6 +34,17 @@ router.get('/register', function(req,res){
 router.get('/login', function(req,res){
 	res.render('login')
 }); 
+
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the login page
+    res.redirect('/login');
+}
+
 
 
 module.exports = router;
