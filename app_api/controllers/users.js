@@ -198,7 +198,7 @@ module.exports.registerStudentsHandler = function(req,res){
 			console.log(user);
 		});
 
-		sendJsonResponse(res, 200, newStudent)
+		sendJsonResponse(res, 201, newStudent)
 	}
 }	
 
@@ -251,7 +251,7 @@ module.exports.registerTeachersHandler = function(req,res){
 			console.log(user);
 		});
 
-		sendJsonResponse(res, 200, newTeacher)
+		sendJsonResponse(res, 201, newTeacher)
 	}
 }
 

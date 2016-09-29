@@ -50,7 +50,7 @@ module.exports.createCourseHandler = function(req,res){
 			if (err) {sendJsonResponse(res, 404, err);}
 		});
 
-		sendJsonResponse(res, 200, newCourse)
+		sendJsonResponse(res, 201, newCourse)
 	}
 }
 
@@ -123,7 +123,7 @@ module.exports.requestCourseHandler = function(req,res){
 				course.isClass = true;
 			}
 			course.save();
-			sendJsonResponse(res, 200, course);
+			sendJsonResponse(res, 201, course);
 			return;
 		})
 	} else {
