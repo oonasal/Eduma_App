@@ -1,40 +1,41 @@
 <div class="container" ng-controller="LoginController">
-  <form class="form-group" name="loginForm" ng-submit="doSubmit()">
-    <table class="form-signin">
-      <thead>
-        <tr >
-          <th class="form-signin-heading" colspan="2">Eduma ( Nam ? )</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            Email Address : 
-          </td>
-          <td>
-            <input ng-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-          </td>
-        </tr>
-        <tr>
-          <td>
-           Password :
-          </td>
-          <td>
-            <input ng-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-          </td>
-        </tr>
-        <tr>
-          <td class="form-signin-heading" colspan="2">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" value="remember-me"> Remember me
-              </label>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>   
-    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!loginForm.$valid">Sign in</button>
-    <span class="btn btn-lg btn-danger btn-block">Sign in with Google</span>
-  </form>
+  <div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
+      <form class="form-group" name="loginForm" ng-submit="doSubmit()">
+        <table class="form-signin">
+          <thead>
+            <tr>
+              <th class="form-signin-heading" colspan="2">Eduma ( Nam ? )</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Email Address :
+              </td>
+              <td>
+                <input ng-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Password :
+              </td>
+              <td>
+                <input ng-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+              </td>
+            </tr>
+            <tr>
+              <td class="form-signin-heading" colspan="2">
+                  <label for="remember-me">Remember me</label>
+                    <input class="form-control" type="checkbox" value="remember-me">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!loginForm.$valid">Sign in</button>
+        <a class="btn btn-lg btn-danger btn-block" href="#/register" >Register</a>
+      </form>
+    </div>
+  </div>
 </div>

@@ -12,12 +12,12 @@
             useRefreshTokens: false
         };
 
-        var _saveRegistration = function (registration, isTeacher) {
+        var _saveRegistration = function (registration, type) {
 
             _logOut();
 
             $http = $http || $injector.get('$http');
-            return $http.post(serviceBase + '/api/users/register/' + ( isTeacher ? 'teachers' : 'students' + '/' ), registration).then(function (response) {
+            return $http.post(serviceBase + '/api/users/register/' + type , registration).then(function (response) {
                 return response;
             });
             // localhost:3000/api/users/register/teachers/

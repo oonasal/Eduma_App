@@ -43,6 +43,7 @@
         vm.getModel = getModel;
 
         function register( model ) {
+            console.log('registering as ',$scope.type);
             authService.saveRegistration(model,$scope.type);
         }
 
