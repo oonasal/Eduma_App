@@ -157,6 +157,7 @@ module.exports.removeStudent = function (req, res) {
 };
 
 module.exports.registerStudentsHandler = function(req,res){
+	console.log("areyou here")
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var username = req.body.username;
@@ -165,7 +166,7 @@ module.exports.registerStudentsHandler = function(req,res){
 	var email = req.body.email;
 	var title = req.body.title;
 	var summary = req.body.summary;
-	var age = req.body.age;
+	var age = req.body.age;	
 
 	// Validation, this should be implemented in frontend, but i did it here just for the demo test
 	req.checkBody('firstname', 'Name is required').notEmpty();
@@ -176,31 +177,50 @@ module.exports.registerStudentsHandler = function(req,res){
 	req.checkBody('password', 'password is required').notEmpty();
 	req.checkBody('password2', 'password does not match').equals(req.body.password);
 
+	console.log("areyou here2000")
 	var errors = req.validationErrors();
 
 	if (errors) {
-		sendJsonResponse(res, 404, errors);
-	} else {
-		var newStudent = new s({
-			firstname: firstname,
-			lastname: lastname,
-			username: username,
-			password: password,
-			email: email,
-			title: title,
-			summary: summary,
-			age: age
-
+		console.log("areyou here1000")
+		sendJsonResponse(res, 400, {
+			"message":"All fields are required"
 		});
-
-		s.createStudents(newStudent, function(err, user){
-			if (err) {sendJsonResponse(res, 404, err);}
-			console.log(user);
-		});
-
-		sendJsonResponse(res, 201, newStudent)
+		return;
 	}
-}	
+
+	console.log('are you here 3000')
+	var student = new s();
+	console.log('are you here 4000')
+	student.firstname = firstname;
+	student.lastname = lastname;
+	student.username = username;
+	console.log('are you here 5000, ', student)
+	student.setPassword(password);
+	console.log('are you here 6000')
+	student.email = email;
+	student.title = title;
+	student.summary = summary;
+	student.age = age;
+	student.save();
+
+	student.save(function(err){
+		var token;
+		if (err){
+			console.log("areyou here1")
+			sendJsonResponse(res, 404, {
+				"message": "cannot generate access token"
+			});
+			return;
+		} else{
+			console.log("areyou here2")
+			token = student.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token": token
+			});
+			return;
+		}
+	});
+}
 
 module.exports.registerTeachersHandler = function(req,res){
 	var firstname = req.body.firstname;
@@ -231,88 +251,97 @@ module.exports.registerTeachersHandler = function(req,res){
 	var errors = req.validationErrors();
 
 	if (errors) {
-		sendJsonResponse(res, 404, errors);
-	} else {
-		var newTeacher = new t({
-			firstname: firstname,
-			lastname: lastname,
-			username: username,
-			password: password,
-			email: email,
-			summary: summary,
-			experience: experience,
-			location: location,
-			rating: rating,
-			title: title
+		sendJsonResponse(res, 400, {
+			"message":"All fields are required"
 		});
+		return;
+	} 
 
-		t.createTeachers(newTeacher, function(err, user){
-			if (err) {sendJsonResponse(res, 404, err);}
-			console.log(user);
-		});
+	var teacher = new t();
+	teacher.firstname = firstname;
+	teacher.lastname = lastname;
+	teacher.username = username;
+	teacher.setPassword(password);
+	teacher.email = email;
+	teacher.summary = summary;
+	teacher.experience = experience;
+	teacher.location = location;
+	teacher.rating = rating;
+	teacher.title = title;
+	teacher.save();
 
-		sendJsonResponse(res, 201, newTeacher)
-	}
-}
-
-module.exports.loginHandler = function(req, res) {
-	passport.use(new LocalStrategy(
-		function(username, password, done) {
-			var checkUser = new Array(2);
-			t.getTeacherByUsername(username, function(err, user) {
-				if (err || !user) {
-					checkUser[1] = false;
-				} else {
-					t.comparePassword(password, user.password, function(err, isMatch) {
-						if (err) throw err;
-						if (isMatch) {
-							return done(null, user);
-						} else {
-							return done(null, false, { message: 'Invalid password' });
-						}
-					});					
-				}	
+	t.save(function(err){
+		var token;
+		if (err){
+			sendJsonResponse(res, 404, {
+				"message": "cannot generate access token"
 			});
-
-			s.getStudentByUsername(username, function(err, user) {
-				if (err || !user) {
-					checkUser[2] = false
-				} else {
-					t.comparePassword(password, user.password, function(err, isMatch) {
-						if (err) throw err;
-						if (isMatch) {
-							return done(null, user);
-						} else {
-							return done(null, false, { message: 'Invalid password' });
-						}
-					});					
-				}	
+			return;
+		} else{
+			token = teacher.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token": token
 			});
-			if (checkUser[1] == false && checkUser[2] == false) {
-				return done(null, false, { message: 'Unknown User' });
-			}
+			return;
 		}
-	));
-
-	passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true})
-	passport.serializeUser(function(user, done) {
- 		done(null, user.id);
 	});
+	
+}
 
-	passport.deserializeUser(function(id, done) {
-		t.getTeacherById(id, function(err, user) {
-			done(err, user);
+module.exports.loginStudentHandler = function(req, res) {
+	if(!req.body.username && !req.body.password){
+		sendJsonResponse(res, 400, {
+			"message": "All Login Credential fields are required"
 		});
-	});
+		return;
+	}
+	passport.authenticate('local', function(err,s, info){
+		var token;
 
+		if (err){
+			sendJsonResponse(res,404, err);
+			return;
+		}
 
-	res.redirect('/');
+		if (s){
+			token = s.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token":token
+			});
+			return;
+
+		} else {
+			sendJsonResponse(res, 401, info);
+			return;
+		}
+	}) (req,res);
 }
 
-module.exports.logoutHandler = function(req,res){
-	req.logout();
+module.exports.loginTeacherHandler = function(req, res) {
+	if(!req.body.username && !req.body.password){
+		sendJsonResponse(res, 400, {
+			"message": "All Login Credential fields are required"
+		});
+		return;
+	}
+	passport.authenticate('local', function(err,t, info){
+		var token;
 
-	req.flash('success_msg', 'You are logged out');
+		if (err){
+			sendJsonResponse(res,404, err);
+			return;
+		}
 
-	res.redirect('../../login');
-}
+		if (t){
+			token = t.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token":token
+			});
+			return;
+
+		} else {
+			sendJsonResponse(res, 401, info);
+			return;
+		}
+	}) (req,res);
+}	

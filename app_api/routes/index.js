@@ -4,6 +4,11 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var expressValidator = require('express-validator');
 var passport = require('passport');
+var jwt = require('express-jwt');
+var auth = jwt({
+    secret: process.env.JWT_SECRET,
+    userProperty: 'payload',
+});
 
 router.use(expressValidator({
     errorFormatter: function(param, msg, value) {
@@ -50,10 +55,11 @@ var ctrlUsers = require('../controllers/users');
 
 //teachers:
 router.post('/users/register/teachers', ctrlUsers.registerTeachersHandler);
-router.get('/users/teachers', ctrlUsers.readTeachers);
-router.get('/users/teachers/:teacherid', ctrlUsers.readOneTeacher);
+router.post('/users/login/teachers',ctrlUsers.loginTeacherHandler);
+router.get('/users/teachers',ctrlUsers.readTeachers);
+router.get('/users/teachers/:teacherid',ctrlUsers.readOneTeacher);
 //router.post('/users/teachers', ctrlUsers.addTeacher);
-router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
+router.delete('/users/teachers/:teacherid',ctrlUsers.removeTeacher);
 
 //reviews:
 //router.get('/users/teachers/:teacherid/reviews', ctrlUsers.readTeacherReviews);
@@ -62,23 +68,16 @@ router.delete('/users/teachers/:teacherid', ctrlUsers.removeTeacher);
 //router.delete('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.removeTeacherReview);
 
 //students:
-router.post('/users/register/students', ctrlUsers.registerStudentsHandler);
-router.get('/users/students', ctrlUsers.readStudents);
-router.get('/users/students/:studentid', ctrlUsers.readOneStudent);
+router.post('/users/register/students',ctrlUsers.registerStudentsHandler);
+router.post('/users/login/students',ctrlUsers.loginStudentHandler);
+router.get('/users/students',ctrlUsers.readStudents);
+router.get('/users/students/:studentid',ctrlUsers.readOneStudent);
 //router.post('/users/students', ctrlUsers.addStudent);
-router.delete('/users/students/:studentid', ctrlUsers.removeStudent);
+router.delete('/users/students/:studentid',ctrlUsers.removeStudent);
 
 // Courses
-router.post('/:teacherid/courses/create', ctrlCourses.createCourseHandler) // register course
-router.get('/:teacherid/:courseid', ctrlCourses.getCourseHandler) // view course
-router.post('/users/requestcourse/:courseid', ctrlCourses.requestCourseHandler); // student request courses 
-
-//Log In Users
-router.post('/users/login', ctrlUsers.loginHandler);
-
-//Log out Users
-router.get('/users/logout', ctrlUsers.logoutHandler);
-
-
+router.post('/:teacherid/courses/create',ctrlCourses.createCourseHandler); // register course
+router.get('/:teacherid/:courseid',ctrlCourses.getCourseHandler); // view course
+router.post('/users/requestcourse/:courseid',ctrlCourses.requestCourseHandler); // student request courses 
 
 module.exports = router;
