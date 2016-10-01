@@ -1,12 +1,38 @@
 <div class="container" ng-controller="CourseController">
-    <h2> Course name : - kurssin mini ?</h2>
+    <h2> Course name : - kurssin nimi ?</h2>
     <div class="row">
-        <div class="col-md-12">
-            <ul class="nav nav-tabs">
-                <li role="presentation" ><a href="#" onclick="return false;">Home</a></li>
-                <li role="presentation"><a href="#/courses" onclick="return false;">Profile</a></li>
-                <li role="presentation"><a href="#" onclick="return false;">Messages</a></li>
+        <div class="col-md-10 col-lg-10 col-sm-12">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <li class="active"><a onclick="return false;" href="#detail" data-toggle="tab">Detail</a></li>
+                <li><a onclick="return false;" href="#discussion" data-toggle="tab">Discussion</a></li>
+                <li><a onclick="return false;" href="#history" data-toggle="tab">History</a></li>
             </ul>
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="detail">
+                    <h1>Course Detail</h1>
+                    <p>Detail regarding the course</p>
+                </div>
+                <div class="tab-pane" id="discussion">
+                    <h1>Course Discussion</h1>
+                    <p>orange orange orange orange orange</p>
+                </div>
+                <div class="tab-pane" id="history">
+                    <h1>Course History</h1>
+                    <p>yellow yellow yellow yellow yellow</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-2 col-lg2">
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-md btn-success">Enroll now!</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-md btn-warning">Bookmark</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

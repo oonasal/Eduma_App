@@ -26,18 +26,35 @@
         // console.log($routeParams);
         var vm = $scope;
         
-        if( $routeParams.teacherId ) {
-            // $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
-            //     $scope.currentTeacher = response.data;
-            // });
-            $http.get('fakedatas/oneTeacherPage.json').then( function(response){
-                console.log('fake dataa')
-                $scope.currentTeacher = response.data;
-            });
-        }   else {
-            // You seems to be lost , let's redirect you to somewhere lol
-            console.error("Lost");
+        vm.goodTeacher = goodTeacher;
+        vm.badTeacher = badTeacher;
+        vm.getTeacher = getTeacher;
+        
+        getTeacher();
+        console.log('calledd');
+        function getTeacher() {
+            if( $routeParams.teacherId ) {
+                // $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
+                //     $scope.currentTeacher = response.data;
+                // });
+                $http.get('fakedatas/oneTeacherPage.json').then( function(response){
+                    console.log('fake dataa')
+                    $scope.currentTeacher = response.data;
+                });
+            }   else {
+                // You seems to be lost , let's redirect you to somewhere lol
+                console.error("Lost");
+            }
+        }
 
+
+        // TODO : tEACHER FEEDBACK ?
+        function goodTeacher( teacherId ) {
+            console.log(teacherId);
+        }
+
+        function badTeacher( teacherId ) {
+            console.log(teacherId);
         }
 
     }]);
@@ -50,6 +67,14 @@
     app.controller('CourseController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
         console.log($routeParams);
         var vm = $scope;
+
+        function enroll ( courseId ) {
+
+        }
+
+        function bookmark ( courseId ) {
+
+        }
     }]);
 
     app.controller('RegisterController',['$scope', '$http', 'authService', '$route', '$routeParams',function($scope, $http, authService, $route, $routeParams){
@@ -77,18 +102,18 @@
                 templateUrl: 'views/login.html',
                 controller: 'LoginController'
             })
-            .when('/teachers/', {
-                templateUrl: 'views/teachers.html',
-                controller: 'TeachersController'
-            })
+            // .when('/teachers/', {
+            //     templateUrl: 'views/teachers.html',
+            //     controller: 'TeachersController'
+            // })
             .when('/teachers/:teacherId', {
                 templateUrl: 'views/teacher.html',
                 controller: 'TeacherController'
             })
-            .when('/courses/', {
-                templateUrl: 'views/courses.html',
-                controller: 'CoursesController'
-            })
+            // .when('/courses/', {
+            //     templateUrl: 'views/courses.html',
+            //     controller: 'CoursesController'
+            // })
             .when('/courses/:id', {
                 templateUrl: '/views/course.html',
                 controller: 'CourseController'
