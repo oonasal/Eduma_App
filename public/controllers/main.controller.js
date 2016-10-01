@@ -8,11 +8,12 @@
         vm.doSubmit = doSubmit;
 
         function doSubmit() {
-            var email = vm.email;
+            var username = vm.username;
             var password = vm.password;
 
-            authService.login(email, password)  // promise me you will love me lololol - I mean use promise here
-            // console.log(email,password);
+            authService.login({ username : username,password: password}).then(function(response){
+                console.log('success with response',response);
+            });
         }
     }]);
 
@@ -23,6 +24,13 @@
 
     app.controller('TeacherController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
         console.log($routeParams);
+
+        if( $routeParams.teacherId) {
+            $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
+                
+            });
+        }
+
         var vm = $scope;
     }]);
 
