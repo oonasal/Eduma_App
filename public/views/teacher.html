@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="row">
-                <h3>Teacher name </h3>
+                <h3>{{ currentTeacher.info.firstname }} + {{ currentTeacher.info.lastname }} </h3>
             </div>
             <div class="row">
                 <h5> Profile picture </h5>
@@ -22,20 +22,18 @@
                 <div class="col-md-12">
                     <div class="row">
                         <h5> Teacher Experience </h5>
-                        <p> 5 years of teaching </p>
+                        <p> {{ currentTeacher.info.experience }} </p>
                     </div>
                     <div class="row">
                         <h5> Teacher Summary </h5>
-                        <p> Jon Snow knows nothing . So do I </p>
+                        <p> {{ currentTeacher.info.summary }} </p>
                     </div>
                     <div class="row">
                         <h5> Courses </h5>
                         <ul style="color:red;" class="list-group">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li  ng-repeat="course in currentTeacher.info.courses" class="list-group-item">
+                                {{ course.courseId }} - {{ course.courseName }}
+                            </li>
                         </ul>
                     </div>
                 </div>

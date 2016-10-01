@@ -1,7 +1,7 @@
 (function () {
     var app = angular.module('myApp', ['ngRoute','LocalStorageModule']);
 
-
+    // TODO : SPlit to different page 
     app.controller('LoginController', ['$scope', '$http', 'authService', function ($scope, $http, authService) {
         var vm = $scope;
 
@@ -17,21 +17,29 @@
         }
     }]);
 
-    app.controller('TeachersController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
-        console.log($routeParams);
-        var vm = $scope;
-    }]);
+    // app.controller('TeachersController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
+    //     console.log($routeParams);
+    //     var vm = $scope;
+    // }]);
 
     app.controller('TeacherController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
-        console.log($routeParams);
-
-        if( $routeParams.teacherId) {
-            $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
-                
+        // console.log($routeParams);
+        var vm = $scope;
+        
+        if( $routeParams.teacherId ) {
+            // $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
+            //     $scope.currentTeacher = response.data;
+            // });
+            $http.get('fakedatas/oneTeacherPage.json').then( function(response){
+                console.log('fake dataa')
+                $scope.currentTeacher = response.data;
             });
+        }   else {
+            // You seems to be lost , let's redirect you to somewhere lol
+            console.error("Lost");
+
         }
 
-        var vm = $scope;
     }]);
 
     app.controller('CoursesController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {

@@ -1,0 +1,20 @@
+{
+    "info" : {
+        "id" : "123",
+        "firstname" : "Jes",
+        "lastname" : "No",
+        "experience" : "Jon Snow",
+        "summary" : "Snow",
+        "courses" : [
+            {
+                "courseId" : "234",
+                "courseName" : "Introduction to ^!@#$"
+            },
+            {
+                "courseId" : "222",
+                "courseName" : "How not to be suck at Dota"
+            }
+        ]
+    },
+    "nextTeacherId" : "124"
+}
