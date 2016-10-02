@@ -27,7 +27,7 @@ module.exports.readTeachers = function (req, res) {
 
 module.exports.readOneTeacher = function (req, res) {
 	if(req.params && req.params.teacherid) {
-		t.findById(req.params.teacherid).exec(function(err, teacher) {
+		t.getTeacherByTeacherId(req.params.teacherid, function(err, teacher) {
 		       	//if teacher is not returned
 		        	if(!teacher) {
 			        	sendJsonResponse(res, 404, {
@@ -39,7 +39,10 @@ module.exports.readOneTeacher = function (req, res) {
 		    		sendJsonResponse(res, 404, err);
 		    		return;
 		   		}
-		    	sendJsonResponse(res, 200, teacher);
+                sendJsonResponse(res, 200, {
+		    		"teacher": teacher,
+					"nextTeacherId": teacher.id + 1
+				});
 	    	});
 	} else {
 		sendJsonResponse(res, 404, {
@@ -247,7 +250,6 @@ module.exports.registerTeachersHandler = function(req,res){
 	req.checkBody('experience', 'experience is required').notEmpty();
 
 
-
 	var errors = req.validationErrors();
 
 	if (errors) {
@@ -255,9 +257,15 @@ module.exports.registerTeachersHandler = function(req,res){
 			"message":"All fields are required"
 		});
 		return;
-	} 
+	}
 
-	var teacher = new t();
+    var teacher = new t();
+
+    var teacherId;
+    t.count({}, function(err, count) {
+        teacherId = count+1;
+    });
+
 	teacher.firstname = firstname;
 	teacher.lastname = lastname;
 	teacher.username = username;
@@ -270,13 +278,15 @@ module.exports.registerTeachersHandler = function(req,res){
 	teacher.title = title;
 
 	t.find({"username":username}, function(err, docs){
-		if (docs.length){
+        teacher.teacherId = teacherId;
+
+        if (docs.length){
 			sendJsonResponse(res, 200, {
 				"message": "teacher username already exist"
 				});
 			return;
 		} else{
-			t.save(function(err){
+			teacher.save(function(err){
 				var token;
 				if (err){
 					sendJsonResponse(res, 404, {
@@ -315,7 +325,7 @@ module.exports.loginStudentHandler = function(req, res) {
 			token = s.generateJwt();
 			sendJsonResponse(res, 200, {
 				"token":token,
-				"student": student
+				"student": s
 			});
 			return;
 
