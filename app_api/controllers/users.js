@@ -165,7 +165,7 @@ module.exports.registerStudentsHandler = function(req,res){
 	var email = req.body.email;
 	var title = req.body.title;
 	var summary = req.body.summary;
-	var age = req.body.age;
+	var age = req.body.age;	
 
 	// Validation, this should be implemented in frontend, but i did it here just for the demo test
 	req.checkBody('firstname', 'Name is required').notEmpty();
@@ -179,28 +179,47 @@ module.exports.registerStudentsHandler = function(req,res){
 	var errors = req.validationErrors();
 
 	if (errors) {
-		sendJsonResponse(res, 404, errors);
-	} else {
-		var newStudent = new s({
-			firstname: firstname,
-			lastname: lastname,
-			username: username,
-			password: password,
-			email: email,
-			title: title,
-			summary: summary,
-			age: age
-
+		sendJsonResponse(res, 400, {
+			"message":"All fields are required"
 		});
-
-		s.createStudents(newStudent, function(err, user){
-			if (err) {sendJsonResponse(res, 404, err);}
-			console.log(user);
-		});
-
-		sendJsonResponse(res, 201, newStudent)
+		return;
 	}
-}	
+
+	var student = new s();
+	student.firstname = firstname;
+	student.lastname = lastname;
+	student.username = username;
+	student.setPassword(password);
+	student.email = email;
+	student.title = title;
+	student.summary = summary;
+	student.age = age;
+
+	s.find({"username":username}, function(err, docs){
+		if (docs.length){
+			sendJsonResponse(res, 200, {
+				"message": "student username already exist"
+				});
+			return;
+		} else{
+			student.save(function(err){
+				var token;
+				if (err){
+					sendJsonResponse(res, 404, {
+						"message": "cannot generate access token"
+					});
+					return;
+				} else{
+					token = student.generateJwt();
+					sendJsonResponse(res, 200, {
+						"token": token
+					});
+					return;
+				}
+			});
+		}
+	});
+}
 
 module.exports.registerTeachersHandler = function(req,res){
 	var firstname = req.body.firstname;
@@ -231,88 +250,104 @@ module.exports.registerTeachersHandler = function(req,res){
 	var errors = req.validationErrors();
 
 	if (errors) {
-		sendJsonResponse(res, 404, errors);
-	} else {
-		var newTeacher = new t({
-			firstname: firstname,
-			lastname: lastname,
-			username: username,
-			password: password,
-			email: email,
-			summary: summary,
-			experience: experience,
-			location: location,
-			rating: rating,
-			title: title
+		sendJsonResponse(res, 400, {
+			"message":"All fields are required"
 		});
+		return;
+	} 
 
-		t.createTeachers(newTeacher, function(err, user){
-			if (err) {sendJsonResponse(res, 404, err);}
-			console.log(user);
-		});
+	var teacher = new t();
+	teacher.firstname = firstname;
+	teacher.lastname = lastname;
+	teacher.username = username;
+	teacher.setPassword(password);
+	teacher.email = email;
+	teacher.summary = summary;
+	teacher.experience = experience;
+	teacher.location = location;
+	teacher.rating = rating;
+	teacher.title = title;
 
-		sendJsonResponse(res, 201, newTeacher)
-	}
-}
-
-module.exports.loginHandler = function(req, res) {
-	passport.use(new LocalStrategy(
-		function(username, password, done) {
-			var checkUser = new Array(2);
-			t.getTeacherByUsername(username, function(err, user) {
-				if (err || !user) {
-					checkUser[1] = false;
-				} else {
-					t.comparePassword(password, user.password, function(err, isMatch) {
-						if (err) throw err;
-						if (isMatch) {
-							return done(null, user);
-						} else {
-							return done(null, false, { message: 'Invalid password' });
-						}
-					});					
-				}	
+	t.find({"username":username}, function(err, docs){
+		if (docs.length){
+			sendJsonResponse(res, 200, {
+				"message": "teacher username already exist"
+				});
+			return;
+		} else{
+			t.save(function(err){
+				var token;
+				if (err){
+					sendJsonResponse(res, 404, {
+						"message": "cannot generate access token"
+					});
+					return;
+				} else{
+					token = teacher.generateJwt();
+					sendJsonResponse(res, 200, {
+						"token": token
+					});
+					return;
+				}
 			});
-
-			s.getStudentByUsername(username, function(err, user) {
-				if (err || !user) {
-					checkUser[2] = false
-				} else {
-					t.comparePassword(password, user.password, function(err, isMatch) {
-						if (err) throw err;
-						if (isMatch) {
-							return done(null, user);
-						} else {
-							return done(null, false, { message: 'Invalid password' });
-						}
-					});					
-				}	
-			});
-			if (checkUser[1] == false && checkUser[2] == false) {
-				return done(null, false, { message: 'Unknown User' });
-			}
 		}
-	));
-
-	passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true})
-	passport.serializeUser(function(user, done) {
- 		done(null, user.id);
 	});
+};		      	
 
-	passport.deserializeUser(function(id, done) {
-		t.getTeacherById(id, function(err, user) {
-			done(err, user);
+module.exports.loginStudentHandler = function(req, res) {
+	if(!req.body.username && !req.body.password){
+		sendJsonResponse(res, 400, {
+			"message": "All Login Credential fields are required"
 		});
-	});
+		return;
+	}
+	passport.authenticate('local', function(err,s, info){
+		var token;
 
+		if (err){
+			sendJsonResponse(res,404, err);
+			return;
+		}
 
-	res.redirect('/');
+		if (s){
+			token = s.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token":token
+			});
+			return;
+
+		} else {
+			sendJsonResponse(res, 401, info);
+			return;
+		}
+	}) (req,res);
 }
 
-module.exports.logoutHandler = function(req,res){
-	req.logout();
+module.exports.loginTeacherHandler = function(req, res) {
+	if(!req.body.username && !req.body.password){
+		sendJsonResponse(res, 400, {
+			"message": "All Login Credential fields are required"
+		});
+		return;
+	}
+	passport.authenticate('local', function(err,t, info){
+		var token;
 
-	req.flash('success_msg', 'You are logged out');
+		if (err){
+			sendJsonResponse(res,404, err);
+			return;
+		}
 
-	res.redirect('../../login');
-}
+		if (t){
+			token = t.generateJwt();
+			sendJsonResponse(res, 200, {
+				"token":token
+			});
+			return;
+
+		} else {
+			sendJsonResponse(res, 401, info);
+			return;
+		}
+	}) (req,res);
+}	

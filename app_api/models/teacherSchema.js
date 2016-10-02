@@ -11,14 +11,25 @@ var teacherSchema = new mongoose.Schema({
     lastname: { type: String, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: String, required: true },
     title: { type: String },
     location: String,
     summary: { type: String, required: true },
     experience: { type: String, required: true },
     rating: { type: Number, min: 0, max: 5 },
-    courses: [{type: Schema.Types.ObjectId, ref: Course}]
+    courses: [{type: Schema.Types.ObjectId, ref: Course}],
+    hash: {type: String},
+    salt: {type: String}
 });
+
+teacherSchema.methods.setPassword = function(password){
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+};
+
+teacherSchema.methods.validPassword = function(password) {
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  return this.hash === hash;
+};
 
 //compiling the schema into a model
 //mongodb collection name for this model will be "teachers"
