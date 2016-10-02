@@ -212,7 +212,8 @@ module.exports.registerStudentsHandler = function(req,res){
 				} else{
 					token = student.generateJwt();
 					sendJsonResponse(res, 200, {
-						"token": token
+						"token": token,
+						"student": student
 					});
 					return;
 				}
@@ -285,7 +286,8 @@ module.exports.registerTeachersHandler = function(req,res){
 				} else{
 					token = teacher.generateJwt();
 					sendJsonResponse(res, 200, {
-						"token": token
+						"token": token,
+						"teacher": teacher
 					});
 					return;
 				}
@@ -312,7 +314,8 @@ module.exports.loginStudentHandler = function(req, res) {
 		if (s){
 			token = s.generateJwt();
 			sendJsonResponse(res, 200, {
-				"token":token
+				"token":token,
+				"student": student
 			});
 			return;
 
@@ -341,7 +344,8 @@ module.exports.loginTeacherHandler = function(req, res) {
 		if (t){
 			token = t.generateJwt();
 			sendJsonResponse(res, 200, {
-				"token":token
+				"token":token,
+				"teacher": teacher
 			});
 			return;
 
