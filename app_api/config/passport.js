@@ -13,16 +13,10 @@ passport.use(new LocalStrategy({
 		s.findOne({username:username}, function(err, student){
 			if(err){ return done(err);}
 			if(!student){
-				// return done(null,false,{
-				// 	message:'Incorrect username.'
-				// });
 				checkUser[1] = false;
 				return;
 			}
 			if(!student.validPassword(password)){
-				// return done(null,false, {
-				// 	message:'Incorrect password.'
-				// });
 				checkPassword[1] = false;
 				return;
 			}
@@ -32,16 +26,10 @@ passport.use(new LocalStrategy({
 		t.findOne({username:username}, function(err, teacher){
 			if(err){ return done(err);}
 			if(!teacher){
-				return done(null,false,{
-					message:'Incorrect username.'
-				});
 				checkUser[2] = false;
 				return;
 			}
 			if(!teacher.validPassword(password)){
-				return done(null,false, {
-					message:'Incorrect password.'
-				});
 				checkPassword[2] = false;
 				return;
 			}
