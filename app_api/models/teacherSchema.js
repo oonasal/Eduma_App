@@ -31,6 +31,10 @@ teacherSchema.methods.validPassword = function(password) {
   return this.hash === hash;
 };
 
+//compiling the schema into a model
+//mongodb collection name for this model will be "teachers"
+var Teacher = module.exports = mongoose.model('Teacher', teacherSchema);
+
 module.exports.createTeachers = function(newUser, callback) {
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newUser.password, salt, function(err, hash) {
@@ -55,7 +59,3 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
-
-//compiling the schema into a model
-//mongodb collection name for this model will be "teachers"
-var Teacher = module.exports = mongoose.model('Teacher', teacherSchema);

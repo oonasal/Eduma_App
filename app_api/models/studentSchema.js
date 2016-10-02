@@ -41,6 +41,8 @@ studentSchema.methods.generateJwt = function(){
     }, process.env.JWT_SECRET);
 };
 
+var Student = module.exports = mongoose.model('Student', studentSchema);
+
 module.exports.createStudents = function(newUser, callback) {
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newUser.password, salt, function(err, hash) {
@@ -51,8 +53,8 @@ module.exports.createStudents = function(newUser, callback) {
 }
 
 module.exports.getStudentByUsername = function(username, callback){
-    var query = {username: username};
-    Student.findOne(query, callback);
+    var query = {"username": username};
+    return Student.findOne(query, callback);
 }
 
 module.exports.getStudentById = function(id, callback){
@@ -61,4 +63,4 @@ module.exports.getStudentById = function(id, callback){
 
 //compiling the schema into a model
 //mongodb collection name for this model will be "teachers"
-var Student = module.exports = mongoose.model('Student', studentSchema);
+

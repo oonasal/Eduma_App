@@ -157,7 +157,6 @@ module.exports.removeStudent = function (req, res) {
 };
 
 module.exports.registerStudentsHandler = function(req,res){
-	console.log("areyou here")
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var username = req.body.username;
@@ -177,48 +176,47 @@ module.exports.registerStudentsHandler = function(req,res){
 	req.checkBody('password', 'password is required').notEmpty();
 	req.checkBody('password2', 'password does not match').equals(req.body.password);
 
-	console.log("areyou here2000")
 	var errors = req.validationErrors();
 
 	if (errors) {
-		console.log("areyou here1000")
 		sendJsonResponse(res, 400, {
 			"message":"All fields are required"
 		});
 		return;
 	}
 
-	console.log('are you here 3000')
 	var student = new s();
-	console.log('are you here 4000')
 	student.firstname = firstname;
 	student.lastname = lastname;
 	student.username = username;
-	console.log('are you here 5000, ', student)
 	student.setPassword(password);
-	console.log('are you here 6000')
 	student.email = email;
 	student.title = title;
 	student.summary = summary;
 	student.age = age;
-	student.save();
 
-	student.save(function(err){
-		var token;
-		if (err){
-			console.log("areyou here1")
-			sendJsonResponse(res, 404, {
-				"message": "cannot generate access token"
-			});
+	s.find({"username":username}, function(err, docs){
+		if (docs.length){
+			sendJsonResponse(res, 200, {
+				"message": "student username already exist"
+				});
 			return;
 		} else{
-			console.log("areyou here2")
-			token = student.generateJwt();
-			sendJsonResponse(res, 200, {
-				"token": token,
-				"student":student
+			student.save(function(err){
+				var token;
+				if (err){
+					sendJsonResponse(res, 404, {
+						"message": "cannot generate access token"
+					});
+					return;
+				} else{
+					token = student.generateJwt();
+					sendJsonResponse(res, 200, {
+						"token": token
+					});
+					return;
+				}
 			});
-			return;
 		}
 	});
 }
@@ -270,23 +268,31 @@ module.exports.registerTeachersHandler = function(req,res){
 	teacher.rating = rating;
 	teacher.title = title;
 
-	t.save(function(err){
-		var token;
-		if (err){
-			sendJsonResponse(res, 404, {
-				"message": "cannot generate access token"
-			});
+	t.find({"username":username}, function(err, docs){
+		if (docs.length){
+			sendJsonResponse(res, 200, {
+				"message": "teacher username already exist"
+				});
 			return;
 		} else{
-			token = teacher.generateJwt();
-			sendJsonResponse(res, 200, {
-				"token": token
+			t.save(function(err){
+				var token;
+				if (err){
+					sendJsonResponse(res, 404, {
+						"message": "cannot generate access token"
+					});
+					return;
+				} else{
+					token = teacher.generateJwt();
+					sendJsonResponse(res, 200, {
+						"token": token
+					});
+					return;
+				}
 			});
-			return;
 		}
 	});
-	
-}
+};		      	
 
 module.exports.loginStudentHandler = function(req, res) {
 	if(!req.body.username && !req.body.password){
