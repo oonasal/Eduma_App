@@ -215,7 +215,8 @@ module.exports.registerStudentsHandler = function(req,res){
 			console.log("areyou here2")
 			token = student.generateJwt();
 			sendJsonResponse(res, 200, {
-				"token": token
+				"token": token,
+				"student":student
 			});
 			return;
 		}
@@ -268,7 +269,6 @@ module.exports.registerTeachersHandler = function(req,res){
 	teacher.location = location;
 	teacher.rating = rating;
 	teacher.title = title;
-	teacher.save();
 
 	t.save(function(err){
 		var token;

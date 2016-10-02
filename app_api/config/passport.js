@@ -10,42 +10,42 @@ passport.use(new LocalStrategy({
 	function(username, password, done){
 		var checkUser = new Array(2);
 		var checkPassword = new Array(2);
-		s.findOne({username:username}, function(err, s){
+		s.findOne({username:username}, function(err, student){
 			if(err){ return done(err);}
-			if(!s){
+			if(!student){
 				// return done(null,false,{
 				// 	message:'Incorrect username.'
 				// });
 				checkUser[1] = false;
 				return;
 			}
-			if(!s.validPassword(password)){
+			if(!student.validPassword(password)){
 				// return done(null,false, {
 				// 	message:'Incorrect password.'
 				// });
 				checkPassword[1] = false;
 				return;
 			}
-			return done(null,s);
+			return done(null,student);
 		});
 
-		t.findOne({username:username}, function(err, t){
+		t.findOne({username:username}, function(err, teacher){
 			if(err){ return done(err);}
-			if(!t){
+			if(!teacher){
 				return done(null,false,{
 					message:'Incorrect username.'
 				});
 				checkUser[2] = false;
 				return;
 			}
-			if(!t.validPassword(password)){
+			if(!teacher.validPassword(password)){
 				return done(null,false, {
 					message:'Incorrect password.'
 				});
 				checkPassword[2] = false;
 				return;
 			}
-			return done(null,t);
+			return done(null,teacher);
 		});
 
 		if(checkUser[1] == false && checkUser [2] == false){

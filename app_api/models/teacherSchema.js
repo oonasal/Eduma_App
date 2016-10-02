@@ -21,10 +21,6 @@ var teacherSchema = new mongoose.Schema({
     salt: {type: String}
 });
 
-//compiling the schema into a model
-//mongodb collection name for this model will be "teachers"
-var Teacher = module.exports = mongoose.model('Teacher', teacherSchema);
-
 teacherSchema.methods.setPassword = function(password){
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
@@ -59,3 +55,7 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	callback(null, isMatch);
 	});
 }
+
+//compiling the schema into a model
+//mongodb collection name for this model will be "teachers"
+var Teacher = module.exports = mongoose.model('Teacher', teacherSchema);

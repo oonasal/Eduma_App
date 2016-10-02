@@ -18,19 +18,15 @@ var studentSchema = new mongoose.Schema({
     salt: {type: String}
 });
 
-//compiling the schema into a model
-//mongodb collection name for this model will be "teachers"
-var Student = module.exports = mongoose.model('Student', studentSchema);
-
 studentSchema.methods.setPassword = function(password){
-    console.log('are you in setpassword')
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
-}
+    this.save();
+};
 
-studentSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
-  return this.hash === hash;
+studentSchema.methods.validPassword = function(password){
+    var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+    return this.hash === hash;    
 };
 
 studentSchema.methods.generateJwt = function(){
@@ -55,10 +51,14 @@ module.exports.createStudents = function(newUser, callback) {
 }
 
 module.exports.getStudentByUsername = function(username, callback){
-	var query = {username: username};
-	Student.findOne(query, callback);
+    var query = {username: username};
+    Student.findOne(query, callback);
 }
 
 module.exports.getStudentById = function(id, callback){
-	Student.findById(id, callback);
+    Student.findById(id, callback);
 }
+
+//compiling the schema into a model
+//mongodb collection name for this model will be "teachers"
+var Student = module.exports = mongoose.model('Student', studentSchema);
