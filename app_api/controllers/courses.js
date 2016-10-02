@@ -40,11 +40,11 @@ module.exports.createCourseHandler = function(req,res){
 			isClass: false
 		});
 
-		t.getTeacherById(teacher, function(err, teacher) {
+		t.getTeacherByTeacherId(teacher, function(err, teacher) {
 			if (err) {sendJsonResponse(res, 404, err);}
 			teacher.courses.push(newCourse);
 			teacher.save();
-		})
+		});
 
 		c.createCourse(newCourse, function(err, course){
 			if (err) {sendJsonResponse(res, 404, err);}
@@ -78,10 +78,10 @@ module.exports.getCourseHandler = function (req,res){
 
 // Student request courses Handler
 module.exports.requestCourseHandler = function(req,res){
-	var studentid = req.body.studentid;
+	var studentid = req.params.studentid;
 	var courseStudent;
 	if(req.params.courseid && studentid){
-		s.getStudentById(studentid, function(err,student){
+		s.getStudentByStudentId(studentid, function(err,student){
 			if (err) {
 				sendJsonResponse(res,404, {
 					"message": "Student not found"
@@ -89,14 +89,14 @@ module.exports.requestCourseHandler = function(req,res){
 				return;
 			}
 			courseStudent = student;
-		}) 
+		});
 
 		c.getCourseById(req.params.courseid, function(err,course){
 			if(err){
 				sendJsonResponse(res, 404, {
 					"message":"Err in getting course"
 				});
-		    		return;
+				return;
 			}
 
 			//This part is to check weather student is already registered for the course or not, but need to have further investigation

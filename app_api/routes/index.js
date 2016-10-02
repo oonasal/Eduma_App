@@ -37,11 +37,36 @@ router.use(flash());
 
 //include API controller files
 var ctrlCourses = require('../controllers/courses');
-var ctrlUsers = require('../controllers/users');
+var ctrlTeachers = require('../controllers/teacherControllers');
+var ctrlStudents = require('../controllers/studentControllers');
 
-//define API routes:
-//uncomment when you've added models and api controllers 
-//for courses etc.
+//teachers:
+router.post('/users/register/teachers', ctrlTeachers.registerTeachersHandler);
+router.post('/users/login/teachers',ctrlTeachers.loginTeacherHandler);
+router.get('/users/teachers',ctrlTeachers.readTeachers);
+router.get('/users/teachers/:teacherid',ctrlTeachers.readOneTeacher);
+router.delete('/users/teachers/:teacherid',ctrlTeachers.removeTeacher);
+
+//students:
+router.post('/users/register/students',ctrlStudents.registerStudentsHandler);
+router.post('/users/login/students',ctrlStudents.loginStudentHandler);
+router.get('/users/students',ctrlStudents.readStudents);
+router.get('/users/students/:studentid',ctrlStudents.readOneStudent);
+router.delete('/users/students/:studentid',ctrlStudents.removeStudent);
+
+// Courses
+router.post('/:teacherid/courses/create',ctrlCourses.createCourseHandler); // register course
+router.get('/:teacherid/:courseid',ctrlCourses.getCourseHandler); // view course
+router.post('/requestcourse/:studentid/:courseid',ctrlCourses.requestCourseHandler); // student request courses
+
+module.exports = router;
+
+
+//reviews:
+//router.get('/users/teachers/:teacherid/reviews', ctrlUsers.readTeacherReviews);
+//router.get('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.readOneTeacherReview);
+//router.post('/users/teachers/:teacherid/reviews', ctrlUsers.addTeacherReview);
+//router.delete('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.removeTeacherReview);
 
 //courses:
 //router.get('/courses', ctrlCourses.readCourses);
@@ -52,32 +77,3 @@ var ctrlUsers = require('../controllers/users');
 //router.get('/courses/:courseid/requests/:requestid', ctrlCourses.readOneCourseRequest);
 //router.post('/courses/:courseid/requests', ctrlCourses.addCourseRequest);
 //router.delete('/courses/:courseid/requests/:requestid', ctrlCourses.removeCourseRequest);
-
-//teachers:
-router.post('/users/register/teachers', ctrlUsers.registerTeachersHandler);
-router.post('/users/login/teachers',ctrlUsers.loginTeacherHandler);
-router.get('/users/teachers',ctrlUsers.readTeachers);
-router.get('/users/teachers/:teacherid',ctrlUsers.readOneTeacher);
-//router.post('/users/teachers', ctrlUsers.addTeacher);
-router.delete('/users/teachers/:teacherid',ctrlUsers.removeTeacher);
-
-//reviews:
-//router.get('/users/teachers/:teacherid/reviews', ctrlUsers.readTeacherReviews);
-//router.get('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.readOneTeacherReview);
-//router.post('/users/teachers/:teacherid/reviews', ctrlUsers.addTeacherReview);
-//router.delete('/users/teachers/:teacherid/reviews/:reviewid', ctrlUsers.removeTeacherReview);
-
-//students:
-router.post('/users/register/students',ctrlUsers.registerStudentsHandler);
-router.post('/users/login/students',ctrlUsers.loginStudentHandler);
-router.get('/users/students',ctrlUsers.readStudents);
-router.get('/users/students/:studentid',ctrlUsers.readOneStudent);
-//router.post('/users/students', ctrlUsers.addStudent);
-router.delete('/users/students/:studentid',ctrlUsers.removeStudent);
-
-// Courses
-router.post('/:teacherid/courses/create',ctrlCourses.createCourseHandler); // register course
-router.get('/:teacherid/:courseid',ctrlCourses.getCourseHandler); // view course
-router.post('/users/requestcourse/:courseid',ctrlCourses.requestCourseHandler); // student request courses 
-
-module.exports = router;

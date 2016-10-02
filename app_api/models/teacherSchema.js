@@ -4,15 +4,19 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var Course = mongoose.model("Course");
 var Schema = mongoose.Schema;
+var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
+
 
 //defining a schema for teachers
 var teacherSchema = new mongoose.Schema({
+    teacherId: {type:Number, required: true},
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     username: { type: String, required: true },
     email: { type: String, required: true },
     title: { type: String },
-    location: String,
+    location: { type: String },
     summary: { type: String, required: true },
     experience: { type: String, required: true },
     rating: { type: Number, min: 0, max: 5 },
@@ -24,12 +28,26 @@ var teacherSchema = new mongoose.Schema({
 teacherSchema.methods.setPassword = function(password){
     this.salt = crypto.randomBytes(16).toString('hex');
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+    this.save();
 };
 
 teacherSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
-  return this.hash === hash;
+    var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+    return this.hash === hash;
 };
+
+teacherSchema.methods.generateJwt = function(){
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + 7); // token is saved for 7 days
+
+    return jwt.sign({
+        _id : this._id,
+        email: this.email,
+        name: this.username,
+        exp: parseInt(expiry.getTime() / 1000)
+    }, process.env.JWT_SECRET);
+};
+
 
 //compiling the schema into a model
 //mongodb collection name for this model will be "teachers"
@@ -49,8 +67,9 @@ module.exports.getTeacherByUsername = function(username, callback){
 	Teacher.findOne(query, callback);
 }
 
-module.exports.getTeacherById = function(id, callback){
-	Teacher.findById(id, callback);
+module.exports.getTeacherByTeacherId = function(teacherId, callback){
+    var query = {"teacherId" : teacherId};
+	Teacher.findOne(query, callback);
 }
 
 module.exports.comparePassword = function(candidatePassword, hash, callback){
