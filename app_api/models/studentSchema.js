@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 
 //defining a schema for teachers
 var studentSchema = new mongoose.Schema({
+    studentId: {type: String},
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     username: { type: String, required: true },
@@ -36,11 +37,13 @@ studentSchema.methods.generateJwt = function(){
     return jwt.sign({
         _id : this._id,
         email: this.email,
-        name: this.name,
+        name: this.username,
         exp: parseInt(expiry.getTime() / 1000)
     }, process.env.JWT_SECRET);
 };
 
+//compiling the schema into a model
+//mongodb collection name for this model will be "teachers"
 var Student = module.exports = mongoose.model('Student', studentSchema);
 
 module.exports.createStudents = function(newUser, callback) {
@@ -50,17 +53,20 @@ module.exports.createStudents = function(newUser, callback) {
             newUser.save(callback);
         });
     });
-}
+};
 
 module.exports.getStudentByUsername = function(username, callback){
     var query = {"username": username};
     return Student.findOne(query, callback);
-}
+};
+
+module.exports.getStudentByStudentId = function(studentId, callback){
+    var query = {"studentId": studentId};
+    return Student.findOne(query, callback);
+};
 
 module.exports.getStudentById = function(id, callback){
     Student.findById(id, callback);
-}
+};
 
-//compiling the schema into a model
-//mongodb collection name for this model will be "teachers"
 

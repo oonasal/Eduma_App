@@ -4,7 +4,7 @@ var Student = mongoose.model("Student");
 
 //defining a schema for courses
 var courseSchema = new mongoose.Schema({
-    teacher: {type: Schema.Types.ObjectId, ref: 'Teacher'},
+    teacher: {type: Number, ref: 'Teacher'},
     student: [{type: Schema.Types.ObjectId, ref: Student}],
     courseName: { type: String, required: true },
     category: { type: String },
