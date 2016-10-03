@@ -5,20 +5,20 @@
             <div class="row">
                 <p> Register as :
                     <label for="type1">
-            <input class="form-control" type="radio" name="type" ng-model="type" value="teachers">
-            Teacher
-        </label>
+                        <input class="form-control" type="radio" name="type" ng-model="type" value="teachers">
+                        Teacher
+                    </label>
                     <label for="type2">
-            <input class="form-control" type="radio" name="type" ng-model="type" value="students">
-            Student
-        </label>
+                        <input class="form-control" type="radio" name="type" ng-model="type" value="students">
+                        Student
+                    </label>
                 </p>
             </div>
             <!-- Teacher form -->
             <form ng-if="type== 'teachers'" name="teacherForm">
                 <div class="form-group">
                     <label for="firstname">First Name:</label>
-                    <input name="firstname" type="text" ng-model="teacherModel.firstname" class="form-control"   />
+                    <input name="firstname" type="text" ng-model="teacherModel.firstname" class="form-control" />
 
                 </div>
                 <div class="form-group">
@@ -32,15 +32,17 @@
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input name="email" type="email" ng-model="teacherModel.email" class="form-control" />
-                    <p ng-if="!teacherForm.email.$valid" class="bg-danger">Email not valid</p> <!-- Validation example -->
+                    <p ng-if="!teacherForm.email.$valid" class="bg-danger">Email not valid</p>
+                    <!-- Validation example -->
                 </div>
                 <div class="form-group">
                     Password: <input class="form-control" type="password" ng-model="teacherModel.password" />
                 </div>
                 <div class="form-group">
-                    <label for="password2">Retype password :</label> 
+                    <label for="password2">Retype password :</label>
                     <input class="form-control" name="password2" type="password" ng-model="teacherModel.password2" />
-                    <p ng-if="teacherForm.password2.$dirty && teacherModel.password2 !== teacherModel.password" class="bg-danger">Passwords does not match !</p> <!-- Validation example -->
+                    <p ng-if="teacherForm.password2.$dirty && teacherModel.password2 !== teacherModel.password" class="bg-danger">Passwords does not match !</p>
+                    <!-- Validation example -->
                 </div>
                 <div class="form-group">
                     <label> Title : </label>
@@ -58,20 +60,52 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 push-md-8">
-                        <input class="btn btn-primary " type="submit" ng-click="register(teacherModel)" value="Register now !" ng-disabled="!teacherForm.$valid" />
+                        <input class="btn btn-primary " type="submit" ng-click="register(teacherModel)" value="Register now !" ng-disabled="!teacherForm.$valid"
+                        />
                     </div>
                 </div>
             </form>
 
             <!-- Student Registration form TODO: Nam reformat class as above -->
-            <form novalidate ng-if="type== 'students'" class="form-group">
-                First Name: <input type="text" ng-model="studentModel.firstname" /><br /> Last Name: <input type="text" ng-model="studentModel.lastname"
-                /><br /> Username: <input type="text" ng-model="studentModel.username" /><br /> E-mail: <input type="email"
-                    ng-model="studentModel.email" /><br /> Password: <input type="password" ng-model="studentModel.password"
-                /><br /> Password 2 : <input type="password" ng-model="studentModel.password2" /><br /> Title: <input type="text"
-                    ng-model="studentModel.title" /><br /> Location: <input type="text" ng-model="studentModel.location" /><br
-                /> Age: <input type="number" ng-model="studentModel.age" /><br /> Summary: <input type="text" ng-model="studentModel.summary"
-                /><br />
+            <form ng-if="type== 'students'" class="form-group" name="studentForm">
+                <div class="form-group">
+                    <label> First Name: </label>
+                    <input class="form-control" type="text" ng-model="studentModel.firstname" />
+                </div>
+                <div class="form-group">
+                    <label>Last Name:</label>
+                    <input class="form-control" type="text" ng-model="studentModel.lastname" />
+                </div>
+                <div class="form-group">
+                    <label>Username:</label>  <input class="form-control" type="text" ng-model="studentModel.username" />
+                </div>
+                <div class="form-group">
+                    <label>E-mail: </label> <input class="form-control" type="email" name="email" ng-model="studentModel.email" />
+                    <p ng-if="!studentForm.email.$valid" class="bg-danger">Email not valid</p>            
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>  <input class="form-control" type="password" ng-model="studentModel.password" />
+                </div>
+                <div class="form-group">
+                    <label>Password 2 :</label>  <input class="form-control" name="password2" type="password" ng-model="studentModel.password2" />
+                    <p ng-if="studentForm.password2.$dirty && studentModel.password2 !== studentModel.password" class="bg-danger">Passwords does not match !</p>                    
+                </div>
+                <div class="form-group">
+                    <label>Title:</label>  <input class="form-control" type="text" ng-model="studentModel.title" />
+                </div>
+                <div class="form-group">
+                    <label>Location:</label> 
+                    <input class="form-control" type="text" ng-model="studentModel.location" />
+                </div>
+                <div class="form-group">
+                    <label>Age: </label>
+                    <input class="form-control" type="number" ng-model="studentModel.age"/> 
+                </div>
+                <div class="form-group">
+                    <label>Summary:</label>
+                      <input class="form-control" type="text" ng-model="studentModel.summary" />
+                </div>
+               
                 <!--<input type="button" ng-click="reset()" value="Reset" />-->
                 <input class="btn btn-primary" type="submit" ng-click="register(studentModel)" value="Register now !" />
             </form>

@@ -14,34 +14,39 @@
 
         var _saveRegistration = function (registration, type) {
 
+            var deferred = $q.defer();
             _logOut();
 
             $http = $http || $injector.get('$http');
-            return $http.post(serviceBase + '/api/users/register/' + type , registration).then(function (response) {
-                return response;
-            });
-            // localhost:3000/api/users/register/teachers/
+            $http.post(serviceBase + '/api/users/register/' + type , registration)
+                .success(function (response) {
 
+                    if(response.message){
+                        deferred.reject({ error : response.message});
+                    }   else {
+                        deferred.resolve(response);
+                    }
+
+                })
+                .error( function(err,status){
+                    deferred.reject(err);
+                })
+            ;
+            // localhost:3000/api/users/register/teachers/
+            return deferred.promise;
         };
 
-        var _login = function (loginData) {
-        
-            var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-
-            if (loginData.useRefreshTokens) {
-                data = data + "&client_id=" + ngAuthSettings.clientId;
-            }
-
+        var _login = function (loginData, type) {        
             var deferred = $q.defer();
 
             $http = $http || $injector.get('$http');
-            $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+            $http.post(serviceBase + '/api/users/login/' + type, loginData, { headers: { 'Content-Type': 'application/json;charset=utf-8' } }).success(function (response) {
 
                 if (loginData.useRefreshTokens) {
-                    localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
+                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
                 }
                 else {
-                    localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName, refreshToken: "", useRefreshTokens: false });
+                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName, refreshToken: "", useRefreshTokens: false });
                 }
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
@@ -114,7 +119,7 @@
         authServiceFactory.logOut = _logOut;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;
-        authServiceFactory.refreshToken = _refreshToken;
+        // authServiceFactory.refreshToken = _refreshToken;
 
         return authServiceFactory;
     }]);
