@@ -1,3 +1,15 @@
-<body ng-app="myApp">
-  <div ng-view></div>
+<body ng-app="myApp" ng-controller="HelloController">
+  <nav class="navbar navbar-fixed-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          Edumaaaaaa
+        </div>
+        <div class="col-md-3 col-md-offset-6">
+          <button ng-if="isAuth" class="btn btn-md btn-danger" type="button" ng-click="logOut()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div id="apparea" ng-view></div>
 </body>

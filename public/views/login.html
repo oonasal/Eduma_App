@@ -1,18 +1,6 @@
 <div class="container" ng-controller="LoginController">
   <div class="row">
     <div class="col-sm-4 col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
-      <div class="row">
-        <p> Register as :
-            <label for="type1">
-                <input class="form-control" type="radio" name="type" ng-model="type" value="teachers">
-                Teacher
-            </label>
-            <label for="type2">
-                <input class="form-control" type="radio" name="type" ng-model="type" value="students">
-                Student
-            </label>
-        </p>
-      </div>
       <form class="form-group" name="loginForm" ng-submit="doSubmit()">
         <table class="form-signin">
           <thead>
@@ -45,6 +33,18 @@
             </tr>
           </tbody>
         </table>
+              <div class="row">
+        <p> Register as :
+            <label for="type1">
+                <input class="form-control" type="radio" name="type" ng-model="type" value="teachers">
+                Teacher
+            </label>
+            <label for="type2">
+                <input class="form-control" type="radio" name="type" ng-model="type" value="students">
+                Student
+            </label>
+        </p>
+      </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!loginForm.$valid">Sign in</button>
         <a class="btn btn-lg btn-danger btn-block" href="#/register" >Register</a>
       </form>

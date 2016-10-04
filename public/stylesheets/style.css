@@ -25,6 +25,7 @@ body {
 }
 
 #apparea {
+  top:50px;
   height: inherit;
 }
 

@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var s = mongoose.model('Student');
 var t = mongoose.model('Teacher');
 
-passport.use(new LocalStrategy({
+passport.use('local',new LocalStrategy({
 		usernameField: 'username'
 	},
 	function(username, password, done){
