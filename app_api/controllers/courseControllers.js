@@ -52,7 +52,7 @@ module.exports.createCourseHandler = function(req,res){
 
 		sendJsonResponse(res, 201, newCourse)
 	}
-}
+};
 
 // Getting Courses Handler
 module.exports.getCourseHandler = function (req,res){
@@ -74,62 +74,58 @@ module.exports.getCourseHandler = function (req,res){
 			"message": "No courseid in request"
 		});
 	}
-}
+};
 
 // Student request courses Handler
 module.exports.requestCourseHandler = function(req,res){
-	var studentid = req.params.studentid;
-	var courseStudent;
-	if(req.params.courseid && studentid){
-		s.getStudentByStudentId(studentid, function(err,student){
-			if (err) {
-				sendJsonResponse(res,404, {
-					"message": "Student not found"
-				});
-				return;
-			}
-			courseStudent = student;
-		});
-
+	if(req.params.courseid && req.params.studentid){
 		c.getCourseById(req.params.courseid, function(err,course){
 			if(err){
 				sendJsonResponse(res, 404, {
 					"message":"Err in getting course"
 				});
 				return;
+			} else {
+				s.getStudentByStudentId(req.params.studentid, function(err,student){
+					if (err) {
+						sendJsonResponse(res,404, {
+							"message": "Student not found"
+						});
+						return;
+					}
+					var courseStudent;
+					courseStudent = Object.assign({}, student);
+					console.log("courseStudent, ", courseStudent);
+					console.log("student, ", student);
+					//This part is to check weather student is already registered for the course or not, but need to have further investigation
+					var checkRegistered = course.student.indexOf(courseStudent._doc.studentId);
+					console.log("checkRegistered, ", checkRegistered);
+					if (checkRegistered != -1){
+						sendJsonResponse(res, 400, { "message": "student already registered"});
+						return;
+					} else{
+						course.student.push(courseStudent._doc.studentId);
+						if (course.student.length >= course.minimum){
+							course.isClass = true;
+							course.save();
+							sendJsonResponse(res, 200, {
+								"course": course,
+								"message": "Class is made with the number of student is: " + course.student.length
+							});
+							return;
+						} else{
+							course.save();
+							sendJsonResponse(res,200,course);
+							return;
+						}
+					}
+				});
 			}
-
-			//This part is to check weather student is already registered for the course or not, but need to have further investigation
-			// if(course.student.length <= 0){
-			// 	course.student.push(courseStudent);
-			// 	course.save();
-			// } else if (course.student.length > 0) {
-			// 	for (var studentRegistered in course.student){
-			// 		if(studentRegistered == courseStudent){ 
-			// 			console.log("Already exists");
-			// 			continue; 
-			// 		}
-			// 		course.student.push(courseStudent);
-			// 	}
-			// 	course.save();
-			// } else if (course.student.length >= course.minimum){
-			// 	course.isClass = true;
-			// 	course.save();
-			// 	return;
-			// }	
-			
-			course.student.push(courseStudent);
-			if (course.student.length >= course.minimum){
-				course.isClass = true;
-			}
-			course.save();
-			sendJsonResponse(res, 201, course);
-			return;
-		})
+		});
 	} else {
 		sendJsonResponse(res, 404, {
 			"message": "No courseid in request"
 		});
 		return;
 	}
-}
+};

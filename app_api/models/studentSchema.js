@@ -7,7 +7,7 @@ var jwt = require('jsonwebtoken');
 
 //defining a schema for teachers
 var studentSchema = new mongoose.Schema({
-    studentId: {type: String},
+    studentId: {type: Number, required: true},
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     username: { type: String, required: true },
