@@ -32,20 +32,34 @@ module.exports.readOneTeacher = function (req, res) {
                     "message": "teacherid not found"
                 });
                 return;
-                //if error message is returned
+            //if error message is returned
             } else if(err) {
                 sendJsonResponse(res, 404, err);
                 return;
             }
-            sendJsonResponse(res, 200, {
-                "teacher": teacher,
-                "nextTeacherId": teacher.id + 1
+            t.count({}, function(err, count){
+                var numberOfTeachers;
+                numberOfTeachers = count;
+                if(teacher.teacherId == numberOfTeachers){
+                    sendJsonResponse(res, 200, {
+                        "teacher": teacher,
+                        "nextTeacherId": 1
+                    });
+                    return;
+                } else{
+                    sendJsonResponse(res, 200, {
+                        "teacher": teacher,
+                        "nextTeacherId": teacher.teacherId + 1
+                    });
+                    return;
+                }
             });
         });
     } else {
         sendJsonResponse(res, 404, {
             "message": "No teacherid in request"
         });
+        return;
     }
 };
 
@@ -176,4 +190,4 @@ module.exports.loginTeacherHandler = function(req, res) {
             return;
         }
     }) (req,res);
-}
+};

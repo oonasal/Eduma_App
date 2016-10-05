@@ -36,7 +36,7 @@ router.use(session({
 router.use(flash());
 
 //include API controller files
-var ctrlCourses = require('../controllers/courses');
+var ctrlCourses = require('../controllers/courseControllers');
 var ctrlTeachers = require('../controllers/teacherControllers');
 var ctrlStudents = require('../controllers/studentControllers');
 
@@ -56,8 +56,22 @@ router.delete('/users/students/:studentid',ctrlStudents.removeStudent);
 
 // Courses
 router.post('/:teacherid/courses/create',ctrlCourses.createCourseHandler); // register course
-router.get('/:teacherid/:courseid',ctrlCourses.getCourseHandler); // view course
+router.get('/:courseid',ctrlCourses.getCourseHandler); // view course
 router.post('/requestcourse/:studentid/:courseid',ctrlCourses.requestCourseHandler); // student request courses
+
+//Log out button
+router.post('/logout', logoutHandler);
+
+var sendJsonResponse = function(res, status, content) {
+    res.status(status);
+    res.json(content);
+};
+
+
+var logoutHandler = function(req,res){
+    var token = "";
+    sendJsonResponse(res, 200, token);
+};
 
 module.exports = router;
 
