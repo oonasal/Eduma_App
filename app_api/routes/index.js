@@ -60,7 +60,7 @@ router.get('/:courseid',ctrlCourses.getCourseHandler); // view course
 router.post('/requestcourse/:studentid/:courseid',ctrlCourses.requestCourseHandler); // student request courses
 
 //Log out button
-router.post('/logout', logoutHandler);
+//router.post('/logout', logoutHandler);
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
@@ -68,10 +68,10 @@ var sendJsonResponse = function(res, status, content) {
 };
 
 
-var logoutHandler = function(req,res){
+/*var logoutHandler = function(req, res){
     var token = "";
     sendJsonResponse(res, 200, token);
-};
+};*/
 
 module.exports = router;
 
