@@ -18,6 +18,7 @@
             console.log('logging Out');
             authService.logOut();
             console.log('loggedOut!');
+            $window.location.href = "#/login/";
         }
 
         function redirectToTeachers() {
@@ -43,6 +44,11 @@
             var username = vm.username;
             var password = vm.password;
             var type = vm.type;
+
+            if(!type){
+                alert('Please select a type');
+                return;
+            }
 
             authService.login({ username: username, password: password }, type).then(function (response) {
                 console.log('success with response', response);
