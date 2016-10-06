@@ -62,14 +62,16 @@
     }]);
 
 
-    app.controller('TeachersController', ['$http', 'authService', '$route'])
-    app.controller('TeacherController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
+    // app.controller('TeachersController', ['$http', 'authService', '$route']);
+
+    app.controller('TeacherController', ['$scope', '$http', 'authService', '$route', '$routeParams','$window', function ($scope, $http, authService, $route, $routeParams,$window) {
         // console.log($routeParams);
         var vm = $scope;
 
         vm.goodTeacher = goodTeacher;
         vm.badTeacher = badTeacher;
         vm.getTeacher = getTeacher;
+        vm.goToNextTeacher = goToNextTeacher;
 
         getTeacher();
         // console.log('calledd');
@@ -78,9 +80,18 @@
                 // $http.get('api/users/teachers/' + $routeParams.teacherId).then( function(response){
                 //     $scope.currentTeacher = response.data;
                 // });
-                $http.get('fakedatas/oneTeacherPage.json').then(function (response) {
+                $http.get('api/users/teachers').then(function (response) {
                     // console.log('fake dataa')
-                    $scope.currentTeacher = response.data;
+                    let responseData = response.data;
+
+                    console.log(responseData);
+
+                    $http.get('api/users/teachers/' + $routeParams.teacherId).then(function (response) {
+                        $scope.currentTeacher.info = response.data['teacher'];
+                        $scope.currentTeacher.nextTeacherId = response.data['nextTeacherId'];
+                    });                    
+
+                    $scope.currentTeacher = {};
                 });
             } else {
                 // You seems to be lost , let's redirect you to somewhere lol
@@ -89,13 +100,21 @@
         }
 
 
+        // TODO: POST GOOD BAD ?
+
         // TODO : tEACHER FEEDBACK ?
         function goodTeacher(teacherId) {
-            console.log(teacherId);
+            console.log(teacherId); 
+            goToNextTeacher($scope.currentTeacher.nextTeacherId);
         }
 
         function badTeacher(teacherId) {
             console.log(teacherId);
+            goToNextTeacher($scope.currentTeacher.nextTeacherId);
+        }
+
+        function goToNextTeacher(teacherId){
+            $window.location.href = '#/teachers/' + teacherId;
         }
 
     }]);
