@@ -60,21 +60,21 @@ module.exports.createTeachers = function(newUser, callback) {
             newUser.save(callback);
         });
     });
-}
+};
 
 module.exports.getTeacherByUsername = function(username, callback){
 	var query = {username: username};
 	Teacher.findOne(query, callback);
-}
+};
 
 module.exports.getTeacherByTeacherId = function(teacherId, callback){
     var query = {"teacherId" : teacherId};
 	Teacher.findOne(query, callback);
-}
+};
 
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;
     	callback(null, isMatch);
 	});
-}
+};
