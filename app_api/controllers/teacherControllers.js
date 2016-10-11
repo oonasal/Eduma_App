@@ -191,3 +191,38 @@ module.exports.loginTeacherHandler = function(req, res) {
         }
     }) (req,res);
 };
+
+module.export.filterHandler = function(req, res){
+    var location = req.query.location;
+    var courseName = req.query.courseName;
+    var isClass = req.query.isClass;
+    var minimumStudent = req.query.minimum;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

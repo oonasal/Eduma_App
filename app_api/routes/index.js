@@ -61,6 +61,9 @@ router.post('/requestcourse/:studentid/:courseid',ctrlCourses.requestCourseHandl
 
 module.exports = router;
 
+// Filter
+router.get('/filter', ctrlTeachers.filterHandler);
+
 
 //reviews:
 //router.get('/users/teachers/:teacherid/reviews', ctrlUsers.readTeacherReviews);
