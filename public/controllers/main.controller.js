@@ -8,17 +8,28 @@
 
         vm.logOut = logOut;
         vm.isAuth = authService.authentication.isAuth;
+        vm.username = authService.authentication.userName;
+        vm.isTeacher = authService.authentication.isTeacher;
         vm.redirectToTeachers = redirectToTeachers;
+        vm.redirectToStudents = redirectToStudents;
 
         if (vm.isAuth) {
-            vm.redirectToTeachers();
+            // if vm.isTeacher || vm.isStudent
+            console.log(vm.isTeacher);
+            if(vm.isTeacher) vm.redirectToStudents(); // vm.redirectToTeacherInfoPage
+            else vm.redirectToTeachers();
         }
 
         function logOut() {
-            console.log('logging Out');
+            // console.log('logging Out');
             authService.logOut();
-            console.log('loggedOut!');
+            // console.log('loggedOut!');
             $window.location.href = "#/login/";
+        }
+
+        function redirectToStudents() {
+            console.log('what to do ?');
+            $window.location.href = '#/students/??';
         }
 
         function redirectToTeachers() {
@@ -32,7 +43,9 @@
 
         vm.doSubmit = doSubmit;
         vm.isAuth = authService.authentication.isAuth;
+        vm.isTeacher = authService.authentication.isTeacher;
         vm.redirectToTeachers = redirectToTeachers;
+        vm.redirectToStudents = redirectToStudents;
 
         if (vm.isAuth) {
             vm.redirectToTeachers();
@@ -52,12 +65,18 @@
 
             authService.login({ username: username, password: password }, type).then(function (response) {
                 console.log('success with response', response);
-                vm.redirectToTeachers();
+                if(!authService.authentication.isTeacher) vm.redirectToTeachers();
+                else vm.redirectToStudents();
             });
         }
 
         function redirectToTeachers() {
             $window.location.href = '#/teachers/1';
+        }
+
+        function redirectToStudents() {
+            console.log('what to do ?');
+            $window.location.href = '#/students/';
         }
     }]);
 
@@ -84,7 +103,7 @@
                     // console.log('fake dataa')
                     let responseData = response.data;
 
-                    console.log(responseData);
+                    // console.log(responseData);
 
                     $http.get('api/users/teachers/' + $routeParams.teacherId).then(function (response) {
                         $scope.currentTeacher.info = response.data['teacher'];
@@ -137,7 +156,7 @@
         }
     }]);
 
-    app.controller('RegisterController', ['$scope', '$http', 'authService', '$route', '$routeParams', function ($scope, $http, authService, $route, $routeParams) {
+    app.controller('RegisterController', ['$scope', '$http', 'authService', '$route', '$routeParams','$window', function ($scope, $http, authService, $route, $routeParams,$window) {
         var vm = $scope;
 
         vm.register = register;
@@ -148,6 +167,8 @@
             authService.saveRegistration(model, $scope.type).then(function (response) {
                 if (response.error) {
                     console.error(response.error);
+                }   else {
+                    $window.location.href = '#/login';
                 }
             });
         }

@@ -163,12 +163,14 @@ module.exports.registerTeachersHandler = function(req,res){
 };
 
 module.exports.loginTeacherHandler = function(req, res) {
+
     if(!req.body.username && !req.body.password){
         sendJsonResponse(res, 400, {
             "message": "All Login Credential fields are required"
         });
         return;
     }
+
     passport.authenticate('local', function(err,t, info){
         var token;
 
@@ -190,4 +192,7 @@ module.exports.loginTeacherHandler = function(req, res) {
             return;
         }
     }) (req,res);
+
+    console.log('end here');
+
 };
