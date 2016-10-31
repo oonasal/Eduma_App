@@ -8,8 +8,6 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-//STUDENTS
-
 module.exports.readStudents = function (req, res) {
     s.find().exec(function(err, students){
         if (err) {
@@ -61,7 +59,7 @@ module.exports.removeStudent = function (req, res) {
     }
 };
 
-module.exports.registerStudentsHandler = function(req,res){
+/*module.exports.registerStudentsHandler = function(req,res){
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var username = req.body.username;
@@ -163,5 +161,5 @@ module.exports.loginStudentHandler = function(req, res) {
             return;
         }
     }) (req,res);
-};
+};*/
 

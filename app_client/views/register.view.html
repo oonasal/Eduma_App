@@ -1,0 +1,63 @@
+<div class="registration-form" class="container">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      
+      
+       <form ng-submit="vm.onSubmit()">
+      
+            <h1>Register</h1>
+      
+            <fieldset>
+            
+            
+            <label for="user-role">User Role:</label>
+            <input type="radio" ng-model="vm.userinfo.role" name="type" value="student" checked> Student
+            <input type="radio" ng-model="vm.userinfo.role" name="type" value="teacher"> Teacher<br>
+        
+            <br>
+    
+              <label for="firstname">First Name:</label>
+              <input type="text" id="firstname" ng-model="vm.userinfo.firstname"" class="form-control" name="user_first_name" required>
+              
+              <label for="lastname">Last Name:</label>
+              <input type="text" id="lastname" ng-model="vm.userinfo.lastname"" class="form-control" name="user_last_name" required>
+              
+              <label for="mail">Email:</label>
+              <input type="email" id="mail" ng-model="vm.userinfo.email" class="form-control" name="user_email" required>
+              
+              <label for="password">Password:</label>
+              <input type="password" id="password" ng-model="vm.userinfo.password" class="form-control" name="user_password" required>
+              
+              <label for="location">Location:</label>
+              <select id="location" name="user_location" ng-model="vm.userinfo.location" class="form-control">
+                <option value="Helsinki">Helsinki</option>
+                <option value="Vantaa">Vantaa</option>
+                <option value="Espoo">Espoo</option>
+                <option value="Kauniainen">Kauniainen</option>
+                <option value="Kerava">Kerava</option>
+                <option value="Oulu">Oulu</option>
+            </select>
+          
+            <label>Age:</label>
+            <input type="number" name="age" min="1" max="100" ng-model="vm.userinfo.age">
+        
+            <label for="summary">Summary:</label>
+            <textarea id="summary" name="user_smmary" ng-model="vm.userinfo.summary"></textarea>
+        
+            <label>Interests:</label>
+            <input type="checkbox" id="development" ng-model="vm.userinfo.interest1" value="interest_development" name="user_interest"><label class="light" for="development">Math</label><br>
+            <input type="checkbox" id="design" ng-model="vm.userinfo.interest2" value="interest_design" name="user_interest"><label class="light" for="design">Biology</label><br>
+            <input type="checkbox" id="business" ng-model="vm.userinfo.interest3" value="interest_business" name="user_interest"><label class="light" for="business">Literature</label>
+        
+            
+            </fieldset>
+          
+          
+          <button type="submit" class="register-button">Register</button>
+          
+    </form>
+            
+   </div>
+  </div>
+
+</div>

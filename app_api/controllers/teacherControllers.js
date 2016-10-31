@@ -8,9 +8,6 @@ var sendJsonResponse = function(res, status, content) {
     res.json(content);
 };
 
-
-//TEACHERS
-
 module.exports.readTeachers = function (req, res) {
     t.find().exec(function(err, teachers){
         if (err) {
@@ -81,7 +78,8 @@ module.exports.removeTeacher = function (req, res) {
     }
 };
 
-module.exports.registerTeachersHandler = function(req,res){
+
+/*module.exports.registerTeachersHandler = function(req,res){
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var username = req.body.username;
@@ -163,14 +161,12 @@ module.exports.registerTeachersHandler = function(req,res){
 };
 
 module.exports.loginTeacherHandler = function(req, res) {
-
     if(!req.body.username && !req.body.password){
         sendJsonResponse(res, 400, {
             "message": "All Login Credential fields are required"
         });
         return;
     }
-
     passport.authenticate('local', function(err,t, info){
         var token;
 
@@ -192,7 +188,4 @@ module.exports.loginTeacherHandler = function(req, res) {
             return;
         }
     }) (req,res);
-
-    console.log('end here');
-
-};
+};*/

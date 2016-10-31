@@ -6,11 +6,9 @@
           <a href="#/">Eduma App</a>
         </div>
         <div class="col-md-3 col-md-offset-6">
-          <button ng-if="isAuth" class="btn btn-md btn-danger" type="button" ng-click="logOut()">Logout - {{username}}</button>
-          <div ng-if="!isAuth">
-          <a class="btn btn-md btn-success" href="#/login">Login</a>
-          <a class="btn btn-md btn-info" href="#/register">Register</a>
-          </div>
+          <button ng-if="isAuth" class="btn btn-md btn-danger" type="button" ng-click="logOut()">Logout</button>
+          <a ng-if="!isAuth" class="btn btn-md btn-success" href="#/login">Login</a>
+          <a ng-if="!isAuth" class="btn btn-md btn-info" href="#/register">Register</a>
         </div>
       </div>
     </div>

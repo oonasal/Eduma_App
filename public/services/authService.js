@@ -9,7 +9,6 @@
         var _authentication = {
             isAuth: false,
             userName: "",
-            isTeacher: false,
             useRefreshTokens: false
         };
 
@@ -26,14 +25,6 @@
                         deferred.reject({ error : response.message});
                     }   else {
                         deferred.resolve(response);
-
-                        type = type.substring(0,type.length - 1); // What the 's' ...really...
-
-                        localStorageService.set('authorizationData', { token: response.token, userName: response[type].username });
-
-                        _authentication.isAuth = true;
-                        _authentication.userName = response[type]['username'];
-                        _authentication.isTeacher = response.teacher ? true : false;
                     }
 
                 })
@@ -52,15 +43,14 @@
             $http.post(serviceBase + '/api/users/login/' + type, loginData, { headers: { 'Content-Type': 'application/json;charset=utf-8' } }).success(function (response) {
 
                 if (loginData.useRefreshTokens) {
-                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName});
+                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
                 }
                 else {
-                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName });
+                    localStorageService.set('authorizationData', { token: response.token, userName: loginData.userName, refreshToken: "", useRefreshTokens: false });
                 }
                 _authentication.isAuth = true;
                 _authentication.userName = loginData.userName;
                 _authentication.useRefreshTokens = loginData.useRefreshTokens;
-                _authentication.isTeacher = response.teacher ? true : false;
 
                 deferred.resolve(response);
 
@@ -80,7 +70,6 @@
             _authentication.isAuth = false;
             _authentication.userName = "";
             _authentication.useRefreshTokens = false;
-            _authentication.isTeacher = null;
 
         };
 
@@ -91,7 +80,6 @@
                 _authentication.isAuth = true;
                 _authentication.userName = authData.userName;
                 _authentication.useRefreshTokens = authData.useRefreshTokens;
-                _authentication.isTeacher = authData.isTeacher;
             }
 
         };

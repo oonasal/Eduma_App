@@ -1,6 +1,6 @@
 module.exports = function (io) {
 
-	console.log('hello');
+	//console.log('hello');
 
 	io.on('connection', function(socket) {
 	    console.log('User connected via socket.io.');

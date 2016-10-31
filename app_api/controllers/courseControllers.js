@@ -129,3 +129,31 @@ module.exports.requestCourseHandler = function(req,res){
 		return;
 	}
 };
+
+//may or may not be useful.
+//check that the given email is associated with a teacher
+//on the system and return that teacher's name.
+var Teacher = mongoose.model('Teacher');
+var getAuthor = function(req, res, callback) {
+  if(req.payload && req.payload.email) {
+    //find teacher using their email address
+    Teacher.findOne({email : req.payload.email}).exec(function(err, teacher) {
+      if(!teacher) {
+        sendJsonResponse(res, 404, {
+          "message": "Teacher not found."
+        });
+        return;
+      } else if(err) {
+        console.log(err);
+        sendJsonResponse(res, 404, err);
+        return;
+      }
+      callback(req, res, teacher.firstname); //probably change
+    });
+  } else {
+    sendJsonResponse(res, 404, {
+      "message": "Teacher not found."
+    });
+    return;
+  }
+};

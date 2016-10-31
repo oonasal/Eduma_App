@@ -1,46 +1,43 @@
 <div class="container">
-	<div class="row">
-		<div class="col-md-6">
-			<div class="row">
-				<h3>{{ currentTeacher.info.firstname }} + {{ currentTeacher.info.lastname }} </h3>
-			</div>
-			<div class="row">
-				<h5> Profile picture </h5>
-			</div>
-			<div class="row">
-				<h5> Action buttons
-					<h5>
-						<img width="200px" height="200px" alt="Someone picture" />
-						<div class="col-md-12">
-							<button class="btn btn-md btn-success" type="button" ng-click="goodTeacher(currentTeacher.info.id)">Approve</button>
-							<button class="btn btn-md btn-danger" type="button" ng-click="badTeacher(currentTeacher.info.id)">Skip</button>
-						</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="row">
-				<h3> Teacher detail </h3>
-				<div class="col-md-12">
-					<div class="row">
-						<h5> Teacher Experience </h5>
-						<p> {{ currentTeacher.info.experience }} </p>
-					</div>
-					<div class="row">
-						<h5> Teacher Summary </h5>
-						<p> {{ currentTeacher.info.summary }} </p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-        <div class="col-md-12">
-		<h5> Courses from instructor </h5>
-		<ul style="color:red;" class="list-group">
-			<li ng-repeat="course in currentTeacher.info.courses" class="list-group-item">
-				<a href="#/courses/{{course.courseId}}"> {{ course.courseId }} - {{ course.courseName }} </a>
-			</li>
-		</ul>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <h3>{{ currentTeacher.info.firstname }} + {{ currentTeacher.info.lastname }} </h3>
+            </div>
+            <div class="row">
+                <h5> Profile picture </h5>
+            </div>
+            <div class="row">
+                <h5> Action buttons<h5>
+                <img width="200px" height="200px" alt="Someone picture" />
+                <div class="col-md-12">
+                    <button  class="btn btn-md btn-success" type="button" ng-click="goodTeacher(currentTeacher.info.id)">Approve</button>
+                    <button class="btn btn-md btn-danger" type="button" ng-click="badTeacher(currentTeacher.info.id)">Skip</button>
+                </div>
+            </div>
         </div>
-	</div>
+        <div class="col-md-6">
+            <div class="row">
+                <h3> Teacher detail </h3>
+                <div class="col-md-12">
+                    <div class="row">
+                        <h5> Teacher Experience </h5>
+                        <p> {{ currentTeacher.info.experience }} </p>
+                    </div>
+                    <div class="row">
+                        <h5> Teacher Summary </h5>
+                        <p> {{ currentTeacher.info.summary }} </p>
+                    </div>
+                    <div class="row">
+                        <h5> Courses </h5>
+                        <ul style="color:red;" class="list-group">
+                            <li  ng-repeat="course in currentTeacher.info.courses" class="list-group-item">
+                               <a href="#/courses/{{course.courseId}}"> {{ course.courseId }} - {{ course.courseName }} </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

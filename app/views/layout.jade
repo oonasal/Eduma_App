@@ -1,17 +1,48 @@
 doctype html
-html
+html(ng-app='edumaApp')
   head
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='./../../bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=PT+Sans")
+
+  body
+
+    .navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='/') Eduma
+          
+
+    .container
+      div(ng-view)
+        block content
+      .row
+          .col-xs-12
+            p hello
+
+
+      footer
+      .row
+        .col-xs-12
+          small &copy; Eduma Team
+      
+
+    
+    
     script(src='./../../bower_components/jquery/dist/jquery.min.js')
     script(src='./../../bower_components/bootstrap/dist/js/bootstrap.min.js')
     script(src='./../../bower_components/angular/angular.min.js')
     script(src='./../../lib/angular-local-storage.min.js')
     script(src='./../../bower_components/angular-route/angular-route.min.js')
-  body
-    block content
+    //script(src='/app.js')
+    //script(src='/controllers/home.controller.js')
+    //script(src='/services/edumaData.service.js')
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+    script(src='/angular/eduma.min.js')
+
+    
+
 
 

@@ -159,7 +159,7 @@ module.exports.removeStudent = function (req, res) {
 	}
 };
 
-module.exports.registerStudentsHandler = function(req,res){
+/*module.exports.registerStudentsHandler = function(req,res){
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var username = req.body.username;
@@ -223,9 +223,9 @@ module.exports.registerStudentsHandler = function(req,res){
 			});
 		}
 	});
-}
+}*/
 
-module.exports.registerTeachersHandler = function(req,res){
+/*module.exports.registerTeachersHandler = function(req,res){
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var username = req.body.username;
@@ -364,4 +364,4 @@ module.exports.loginTeacherHandler = function(req, res) {
 			return;
 		}
 	}) (req,res);
-}	
+}*/
